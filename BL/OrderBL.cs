@@ -1,5 +1,6 @@
 ﻿using Persistence;
 using DAL;
+using System.Collections.Generic;
 
 namespace BL
 {
@@ -11,10 +12,20 @@ namespace BL
         {
             orderDAL = new OrderDAL();
         }
-        public Order GetOrderByDates(DateTime date, int shop)
+        public List<Order> GetOrderByDates(DateTime date, int shop)
         {
-            Order order = orderDAL.GetOrderByDates(date,shop);
-            return order;
+           List<Order> orders = orderDAL.GetOrderByDates(date,shop);
+            return orders;
+        }
+        public List<Order> GetOrderByDishes(string dishName, int shop)
+        {
+           List<Order> orders = orderDAL.GetOrderByDish(dishName,shop);
+            return orders;
+        }
+        public List<Order> GetOrderByStatus(string status, int shop)
+        {
+           List<Order> orders = orderDAL.GetOrderByStatus(status,shop);
+            return orders;
         }
     }
 }

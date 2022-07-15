@@ -9,5 +9,7 @@ public class Order
     public string Dish_Name {get; set;}
     public int Quantity {get; set;}
     public double Total {get; set;}
+    public string Status {get; set;}
+    
 
 }
