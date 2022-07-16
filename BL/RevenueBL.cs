@@ -16,10 +16,10 @@ namespace BL
            List<Revenue> revenue = revenueDAL.GetRevenueDay(date,shop);
             return revenue;
         }
-        /*public List<Revenue> GetRevenueByMonth(string month, int shop)
+        public List<Revenue> GetRevenueByMonth(string month, int shop)
         {
            List<Revenue> revenue = revenueDAL.GetRevenueMonth(month,shop);
             return revenue;
-        }*/
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace Presentation
                        SearchRevenueDay();
                        break;
                       case 2:
-                       //SearchRevenueMonth();
+                       SearchRevenueMonth();
                        break;
                       case 3:
                       bool test = false;
@@ -64,12 +64,12 @@ namespace Presentation
                     List<Revenue> revenues = revenueBL.GetRevenueByDates(dates,shop);
                     if(revenues != null)
                     {
-                        var table = new ConsoleTable("AMOUNT ORDER IN DAY","TOTAL DISHES SOLD","REVENUE OF DAY");
+                        var table = new ConsoleTable("DATE","AMOUNT ORDER IN DAY","TOTAL DISHES SOLD","REVENUE OF DAY");
                         foreach(Revenue revenue in revenues)
                         {
                            if(dates == revenue.Dates)
                            {
-                              table.AddRow(revenue.Count,revenue.Sold,revenue.Sum_Revenue_Day);
+                              table.AddRow(revenue.Dates,revenue.Count,revenue.Sold,revenue.Sum_Revenue_Day);
                            }
                            else
                            {
@@ -93,7 +93,7 @@ namespace Presentation
                 Console.WriteLine(e.Message);
             }
         }
-        /*public void SearchRevenueMonth()
+        public void SearchRevenueMonth()
         {
             try
             {
@@ -103,16 +103,20 @@ namespace Presentation
                     int shop = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Month : ");
                     string month = Convert.ToString(Console.ReadLine());
+                    if(month.Length == 1)
+                    {
+                        month = "0" + month;
+                    }
                     RevenueBL revenueBL = new RevenueBL();
                     List<Revenue> revenues = revenueBL.GetRevenueByMonth(month,shop);
                     if(revenues != null)
                     {
-                        var table = new ConsoleTable("AMOUNT ORDER IN DAY","TOTAL DISHES SOLD","REVENUE OF MONTH");
+                        var table = new ConsoleTable("MONTH","AMOUNT ORDER IN MONTH","TOTAL DISHES SOLD","REVENUE OF MONTH");
                         foreach(Revenue revenue in revenues)
                         {
-                           if(month == revenue.Dates.ToString("MM"))
+                           if(month == revenue.Dates.ToString("yyyy-MM-dd").Substring(5,2))
                            {
-                              table.AddRow(revenue.Count,revenue.Sold,revenue.Sum_Revenue_Month);
+                              table.AddRow(revenue.Dates,revenue.Count,revenue.Sold,revenue.Sum_Revenue_Month);
                            }
                            else
                            {
@@ -135,6 +139,6 @@ namespace Presentation
             {
                 Console.WriteLine(e.Message);
             }
-        }*/
+        }
     }
 }
