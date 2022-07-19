@@ -21,7 +21,7 @@ public class DishDAL
         int maxid = 0;
         if(reader.Read())
         {
-            maxid = reader.GetInt32("max(dishID)");
+            maxid = reader.GetInt32("max(dishID)") + 1;
         }
         DBHelper.CloseConnection();
         return maxid;

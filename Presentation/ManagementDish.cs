@@ -85,7 +85,7 @@ namespace Presentation
                    char check = Convert.ToChar(Console.ReadLine());
                    if(check == 'y')
                    {
-                       dishes.DishID = CreateDishID();
+                       dishes.DishID = dishBL.DishIDMax();
                        Console.Write("Dish ID : " + dishes.DishID);
                        Console.ReadKey();
                        dishBL.InsertDish(dishes);
@@ -99,12 +99,6 @@ namespace Presentation
 
             }
         }
-        public int CreateDishID()
-        {
-            int max = 0;
-            DishBL dishBL = null;
-            max = dishBL.DishIDMax() + 1;
-            return max;
-        }
+        
     }
 }
