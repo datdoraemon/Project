@@ -1,5 +1,5 @@
 ﻿namespace DALTest;
-public class Class1
+public class DishDAL
 {
-
+    
 }

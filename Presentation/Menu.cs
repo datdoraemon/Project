@@ -8,6 +8,7 @@ namespace Presentation
     {
         ManageOrder mo = new ManageOrder();
         ManagementRevenue mr = new ManagementRevenue();
+        ManagementDish md = new ManagementDish();
         public void MainMenu()
         {
             while (true)
@@ -25,7 +26,7 @@ namespace Presentation
                 switch(choice)
                 {
                     case 1:
-                       
+                       md.ManagementDishes();
                        break;
                     case 2:
                        mo.ManagenmentOrder(); 
