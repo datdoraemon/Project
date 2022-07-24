@@ -11,14 +11,23 @@ namespace BL
         {
             dishDAL = new DishDAL();
         }
-        public void InsertDish(Dish dish)
+        public List<Dish> GetAllDish(int shop)
         {
-            dishDAL.InsertDish(dish);
+            List<Dish> dishes = dishDAL.GetAllDish(shop);
+            return dishes;
         }
-        public int DishIDMax()
+        public void InsertDish(Dish dish, int shop)
         {
-            int maxid = dishDAL.DishIDMax();
-            return maxid;
+            dishDAL.InsertDish(dish,shop);
+        }
+        public void SaveDish(Dish dish, int shop)
+        {
+            dishDAL.SaveDish(dish,shop);
+        }
+        public List<Dish> GetDishID(int shop)
+        {
+            List<Dish> dishes = dishDAL.GetDishID(shop);
+            return dishes;
         }
     }
 }
