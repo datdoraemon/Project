@@ -5,6 +5,12 @@ namespace DAL
 {
     public class CategoryDAL : DishDAL
     {
+        public Category GetCateID(MySqlDataReader reader)
+        {
+           Category category = new Category();
+           category.CategoryID = reader.GetInt32("categoryID");
+           return category;
+        }
         public Category GetCategory(MySqlDataReader reader)
         {
             Category category = new Category();
@@ -58,6 +64,39 @@ namespace DAL
             }
             DBHelper.CloseConnection();
             return categories;
+        }
+        public void InsertCate(Category cate)
+        {
+          string query = $"insert Category(categoryID ,categoryName) values('{cate.CategoryID}','{cate.CategoryName}')";
+          Console.WriteLine(query);
+        
+          DBHelper.OpenConnection();
+          MySqlDataReader reader = DBHelper.ExecQuery(query);
+          DBHelper.CloseConnection();
+        }
+        public void SaveCate(Category cate, int shop)
+        {
+           string query = $"insert CateShop(categoryID, shopID) values('{cate.CategoryID}','{shop}')";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           DBHelper.CloseConnection();
+        }
+        public List<Category> GetCateID()
+        {
+           string query = @"select categoryID from Category";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           Category categories = null;
+           List<Category> catelist = new List<Category>();
+           while(reader.Read())
+           {
+              categories = GetCateID(reader);
+              catelist.Add(categories);
+           }
+           DBHelper.CloseConnection();
+           return catelist;
         }
     }
 }

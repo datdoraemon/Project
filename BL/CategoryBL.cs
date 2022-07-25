@@ -23,5 +23,18 @@ namespace BL
             List<Category> categories = categoryDAL.GetAllDishofCate(shop,categoryID);
             return categories;
         }
+        public void InsertCate(Category category)
+        {
+            categoryDAL.InsertCate(category);
+        }
+        public void SaveCate(Category cate, int shop)
+        {
+            categoryDAL.SaveCate(cate,shop);
+        }
+        public List<Category> GetCateID()
+        {
+            List<Category> categories = categoryDAL.GetCateID();
+            return categories;
+        }
     }
 }

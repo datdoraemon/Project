@@ -16,17 +16,17 @@ namespace BL
             List<Dish> dishes = dishDAL.GetAllDish(shop);
             return dishes;
         }
-        public void InsertDish(Dish dish, int shop)
+        public void InsertDish(Dish dish)
         {
-            dishDAL.InsertDish(dish,shop);
+            dishDAL.InsertDish(dish);
         }
         public void SaveDish(Dish dish, int shop)
         {
             dishDAL.SaveDish(dish,shop);
         }
-        public List<Dish> GetDishID(int shop)
+        public List<Dish> GetDishID()
         {
-            List<Dish> dishes = dishDAL.GetDishID(shop);
+            List<Dish> dishes = dishDAL.GetDishID();
             return dishes;
         }
     }

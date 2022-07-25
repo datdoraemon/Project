@@ -40,7 +40,7 @@ public class DishDAL
             DBHelper.CloseConnection();
             return dishlist;
     }
-    public void InsertDish(Dish ds, int shop)
+    public void InsertDish(Dish ds)
     {
         string query = $"insert Dish(dishID, dishName,amount,unit_price,date_of_manufacture,expiry) values('{ds.DishID}','{ds.DishName}','{ds.Amount}','{ds.Price}','{ds.DateofManufacture}','{ds.Expiry}')";
         Console.WriteLine(query);
@@ -57,10 +57,10 @@ public class DishDAL
         MySqlDataReader reader = DBHelper.ExecQuery(query);
         DBHelper.CloseConnection();
     }
-    public List<Dish> GetDishID(int shop)
+    public List<Dish> GetDishID()
     {
-        string query = @"select ds.dishID from Dish ds
-                         inner join ShopDish sd on ds.dishID = sd.dishID";
+        string query = @"select ds.dishID from Dish ds";
+        
         DBHelper.OpenConnection();
         MySqlDataReader reader = DBHelper.ExecQuery(query);
         Dish dishes = null;

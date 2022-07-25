@@ -18,9 +18,8 @@ namespace Presentation
                    table.AddRow("1. CREATE DISH");
                    table.AddRow("2. DISPLAY ALL DISHES");
                    table.AddRow("3. SEARCH DISH");
-                   table.AddRow("4. CREATE CATEGORY");
-                   table.AddRow("5. DISPLAY ALL CATEGORIES");
-                   table.AddRow("6. BACK TO MAIN MENU");
+                   table.AddRow("4. DISPLAY ALL CATEGORIES");
+                   table.AddRow("5. BACK TO MAIN MENU");
                    table.Write();
                    Console.WriteLine();
 
@@ -38,20 +37,17 @@ namespace Presentation
                        
                        break;
                       case 4:
-                       
-                       break;
-                      case 5:
                        DisplayAllCategory();
                        break;
-                      case 6:
-                      bool test = false;
+                      case 5:
+                       bool test = false;
                       if(test == false)
                       {
                          break;
                       }
-                      break;
+                       break;
                       default:
-                      Console.WriteLine("Choose 1-3");
+                      Console.WriteLine("Choose 1-5");
                       break;
                    }
                    break;
@@ -74,15 +70,15 @@ namespace Presentation
                    
                    Console.Write("Shop: ");
                    int shop = Convert.ToInt32(Console.ReadLine());
-                   List<Dish> listdish = dishBL.GetDishID(shop);
-                   int x = random.Next(25 ,500);
+                   List<Dish> listdish = dishBL.GetDishID();
+                   int x = random.Next(1 ,500);
                    foreach(Dish dish in listdish)
                    {
                        if(x == dish.DishID)
                        {
                            while(x == dish.DishID)
                            {
-                               x = random.Next(25 ,500); 
+                               x = random.Next(1 ,500); 
                                if(x != dish.DishID)
                                {
                                   dishes.DishID = x;
@@ -95,7 +91,6 @@ namespace Presentation
                           dishes.DishID = x;
                        }
                    }
-                
                    Console.WriteLine("Dish ID : "+ dishes.DishID);
                    Console.Write("Dish Name: ");
                    dishes.DishName = Convert.ToString(Console.ReadLine());
@@ -112,7 +107,7 @@ namespace Presentation
                    char check = Convert.ToChar(Console.ReadLine());
                    if(check == 'y')
                    {
-                       dishBL.InsertDish(dishes,shop);
+                       dishBL.InsertDish(dishes);
                        dishBL.SaveDish(dishes,shop);
                        Console.WriteLine("Add dish success");
                        Console.Write("Do you want to add else dish : ");
@@ -181,7 +176,7 @@ namespace Presentation
                     table.Write();
                     Console.WriteLine();
 
-                    Console.WriteLine("Do you want to see dishes of category ? (press 'y' to continue, 'n' to exit)");
+                    Console.WriteLine("Do you want to add category ? (press 'y' to continue, 'n' to exit)");
                     char check = Convert.ToChar(Console.ReadLine());
                     if(check == 'n')
                     {
@@ -189,7 +184,7 @@ namespace Presentation
                     }
                     else
                     {
-                        DisplayDishofCategory();
+                        InsertCate();
                     }
                 }
             }
@@ -219,6 +214,65 @@ namespace Presentation
                         
                 table.Write();
                 Console.WriteLine();
+            }
+        }
+        public void InsertCate()
+        {
+            try
+            {
+                while(true)
+                {
+                   Console.Clear();
+                   Random random = new Random();
+                   Category category = new Category();
+                   CategoryBL cateBL = new CategoryBL();
+                   
+                   Console.Write("Shop: ");
+                   int shop = Convert.ToInt32(Console.ReadLine());
+                   List<Category> catelist = cateBL.GetCateID();
+                   int x = random.Next(1 ,50);
+                   foreach(Category cate in catelist)
+                   {
+                       if(x == cate.CategoryID)
+                       {
+                           while(x == cate.CategoryID)
+                           {
+                               x = random.Next(1 ,500); 
+                               if(x != cate.CategoryID)
+                               {
+                                  category.CategoryID = x;
+                                   break;
+                               }  
+                           }
+                       }
+                       else
+                       {
+                          category.CategoryID = x;
+                       }
+                   }
+                   Console.WriteLine("Category ID : "+ category.CategoryID);
+                   Console.Write("Category Name: ");
+                   category.CategoryName = Convert.ToString(Console.ReadLine());
+
+                   Console.Write("Do you want to save this category ? (Input 'y' to save , 'n' to not save)");
+                   char check = Convert.ToChar(Console.ReadLine());
+                   if(check == 'y')
+                   {
+                       cateBL.InsertCate(category);
+                       cateBL.SaveCate(category, shop);
+                       Console.WriteLine("Add dish success");
+                       Console.Write("Do you want to add else dish : ");
+                       char key = Convert.ToChar(Console.ReadLine());
+                       if(key == 'y')
+                       {
+                           InsertCate();
+                       }  
+                   }
+                }
+            }
+            catch
+            {
+
             }
         }
     }
