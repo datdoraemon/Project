@@ -184,9 +184,36 @@ namespace Presentation
                     }
                     else
                     {
-                        InsertCate();
+                        MenuCategory(shop);
                     }
                 }
+            }
+        }
+        public void MenuCategory(int shop)
+        {
+            int choice;
+            Console.WriteLine("=====================");
+            Console.WriteLine("1. ADD CATEGORY");
+            Console.WriteLine("2. EDIT CATEGORY");
+            Console.WriteLine("3. DISPLAY DISHES OF CATEGORY");
+            Console.WriteLine("4. BACK");
+            Console.Write("YOUR CHOICE : ");
+            choice = Convert.ToInt32(Console.ReadLine());
+            switch(choice)
+            {
+                case 1:
+                InsertCate();
+                break;
+                case 2:
+                EditCate();
+                break;
+                case 3:
+
+                break;
+                case 4:
+                break;
+                default:
+                break;
             }
         }
         public void DisplayDishofCategory()
@@ -273,6 +300,98 @@ namespace Presentation
             catch
             {
 
+            }
+        }
+        public void EditCate()
+        {
+            try
+            {
+               while(true)
+               {
+                   Category category = new Category();
+                   Console.WriteLine("What do you want to edit ? (Input categoryID)");
+                   int cateID = Convert.ToInt32(Console.ReadLine());
+                   Console.Write("New category name is : "); 
+                   category.CategoryName = Convert.ToString(Console.ReadLine());
+                   Console.Write("Do you want to save this change ? (Input 'y' to save, 'n' to not save)");
+                   char key = Convert.ToChar(Console.ReadLine());
+                   if(key == 'y')
+                   {
+                       CategoryBL categoryBL = new CategoryBL();
+                       categoryBL.EditCate(category);
+                       Console.WriteLine("Update success !");
+                   }
+                   Console.WriteLine("Do you want to continue ?(Input 'y' to save, 'n' to not save)");
+                   char key1 = Convert.ToChar(Console.ReadLine());
+                   if(key1 == 'n')
+                   {
+                       break;
+                   }
+               }
+            }
+            catch
+            {
+
+            }
+        }
+        public void DisplayDetailDish(int shop)
+        {
+            Console.Clear();
+            Category category = new Category();
+            CategoryBL categoryBL = new CategoryBL();
+            List<Category> catelist = categoryBL.DisplayDishofCate(category,shop);
+            
+            Console.Write("Input dishID : ");
+            int key = Convert.ToInt32(Console.ReadLine());
+            foreach(Category cate in catelist)
+            {
+                if(key == cate.CategoryID)
+                {
+                    Console.WriteLine("====================");
+                    Console.WriteLine("DETAIL DISH");
+                    Console.WriteLine("====================");
+                    Console.Write("1.Dish Name : " + cate.CategoryName);
+                    Console.Write("2.Amount : " + cate.Amount);
+                    Console.Write("3.Price : " + cate.Price);
+                    Console.Write("4.Date of manufacture : " + cate.DateofManufacture);
+                    Console.Write("5.Expiry : " + cate.Expiry);
+                    Console.WriteLine("==========================");
+                }
+            }
+            Console.Write("Do you want to update information of dish ? (Input 'y' to update , 'n' to exit)");
+            char check = Convert.ToChar(Console.ReadLine());
+            if(check == 'y')
+            {
+
+            }
+        }
+        public void Update(Category category, int key)
+        {
+            while(true)
+            {
+                CategoryBL cate = new CategoryBL();
+                Console.Write("What do you want to change ? (Input 1-5) : ");
+                int num = Convert.ToInt32(Console.ReadLine());
+                if(num == 1)
+                {
+                    cate.UpdateName(category);
+                }
+                if(num == 2)
+                {
+                    cate.UpdateAmount(category);
+                }
+                if(num == 3)
+                {
+                    cate.UpdateAmount(category);
+                }
+                if(num == 2)
+                {
+                    cate.UpdateAmount(category);
+                }
+                if(num == 2)
+                {
+                    cate.UpdateAmount(category);
+                }
             }
         }
     }

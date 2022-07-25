@@ -5,6 +5,17 @@ namespace DAL
 {
     public class CategoryDAL : DishDAL
     {
+        public Category GetDishofCategory(MySqlDataReader reader)
+        {
+            Category category = new Category();
+            category.DishID = reader.GetInt32("dishID");
+            category.DishName = reader.GetString("dishName");
+            category.Amount = reader.GetInt32("amount");
+            category.Price = reader.GetDouble("unit_price");
+            category.DateofManufacture = reader.GetDateTime("date_of_manufacture");
+            category.Expiry = reader.GetDateTime("expiry");
+            return category;
+        }
         public Category GetCateID(MySqlDataReader reader)
         {
            Category category = new Category();
@@ -97,6 +108,74 @@ namespace DAL
            }
            DBHelper.CloseConnection();
            return catelist;
+        }
+        public void EditCate(Category cate)
+        {
+           string query = $"update Category set categoryName = {cate.CategoryName} where categoryID = {cate.CategoryID}";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           DBHelper.CloseConnection();
+        }
+        public List<Category> DisplayDetailDish(Category cate, int shop)
+        {
+            string query = @"select ds.dishID,ds.dishName ,ds.amount, ds.unit_price, ds.date_of_manufacture, ds.expiry from Dish ds
+                             inner join CateDish cd on ds.dishID = cd.dishID
+                             inner join Category c on cd.categoryID = c.categoryID
+                             inner join CateShop cs on c.categoryID = cs.categoryID
+                             inner join Shop s on cs.shopID = s.shopID
+                             where s.shopID = " + shop +" and c.categoryName = " + cate.CategoryName;
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           Category categories = null;
+           List<Category> catelist = new List<Category>();
+           while(reader.Read())
+           {
+              categories = GetDishofCategory(reader);
+              catelist.Add(categories);
+           }
+           DBHelper.CloseConnection();
+           return catelist;               
+        }
+        public void UpdateDishAtDishName(Category cate)
+        {
+           string query = $"update Dish set dishName = {cate.DishName} where dishID = {cate.DishID}";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           DBHelper.CloseConnection();
+        }
+        public void UpdateDishAtAmount(Category cate)
+        {
+           string query = $"update Dish set amount = {cate.Amount} where dishID = {cate.DishID}";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           DBHelper.CloseConnection();
+        }
+        public void UpdateDishAtPrice(Category cate)
+        {
+           string query = $"update Dish set unit_price = {cate.Price} where dishID = {cate.DishID}";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           DBHelper.CloseConnection();
+        }
+        public void UpdateDishAtManufacture(Category cate)
+        {
+           string query = $"update Dish set date_of_manufacture = {cate.DateofManufacture} where dishID = {cate.DishID}";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           DBHelper.CloseConnection();
+        }
+        public void UpdateDishAtExpiry(Category cate)
+        {
+           string query = $"update Dish set expiry = {cate.Expiry} where dishID = {cate.DishID}";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           DBHelper.CloseConnection();
         }
     }
 }

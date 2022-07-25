@@ -36,5 +36,34 @@ namespace BL
             List<Category> categories = categoryDAL.GetCateID();
             return categories;
         }
+        public void EditCate(Category cate)
+        {
+            categoryDAL.EditCate(cate);
+        }
+        public List<Category> DisplayDishofCate(Category cate,int shop)
+        {
+            List<Category> categories = categoryDAL.DisplayDetailDish(cate, shop);
+            return categories;
+        }
+        public void UpdateName(Category cate)
+        {
+            categoryDAL.UpdateDishAtDishName(cate);
+        }
+        public void UpdateAmount(Category cate)
+        {
+            categoryDAL.UpdateDishAtAmount(cate);
+        }
+        public void UpdatePrice(Category cate)
+        {
+            categoryDAL.UpdateDishAtPrice(cate);
+        }
+        public void UpdateManufacture(Category cate)
+        {
+            categoryDAL.UpdateDishAtManufacture(cate);
+        }
+        public void UpdateExpiry(Category cate)
+        {
+            categoryDAL.UpdateDishAtExpiry(cate);
+        }
     }
 }
