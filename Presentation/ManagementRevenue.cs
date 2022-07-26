@@ -29,7 +29,7 @@ namespace Presentation
                        SearchRevenueDay(shop);
                        break;
                       case 2:
-                       SearchRevenueMonth();
+                       SearchRevenueMonth(shop);
                        break;
                       case 3:
                       bool test = false;
@@ -91,14 +91,12 @@ namespace Presentation
                 Console.WriteLine(e.Message);
             }
         }
-        public void SearchRevenueMonth()
+        public void SearchRevenueMonth(int shop)
         {
             try
             {
                 while(true)
                 {
-                    Console.WriteLine("Shop: ");
-                    int shop = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Month : ");
                     string month = Convert.ToString(Console.ReadLine());
                     if(month.Length == 1)

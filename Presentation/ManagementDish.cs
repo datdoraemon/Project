@@ -6,7 +6,7 @@ namespace Presentation
 {
     public class ManagementDish 
     {
-        public void ManagementDishes()
+        public void ManagementDishes(int shop)
         {
             try
             {
@@ -28,16 +28,16 @@ namespace Presentation
                    switch(choice)
                    {
                       case 1:
-                       InsertDish();
+                       InsertDish(shop);
                        break;
                       case 2:
-                       DisplayAllDish();
+                       DisplayAllDish(shop);
                        break;
                       case 3:
                        
                        break;
                       case 4:
-                       DisplayAllCategory();
+                       DisplayAllCategory(shop);
                        break;
                       case 5:
                        bool test = false;
@@ -58,7 +58,7 @@ namespace Presentation
               Console.WriteLine(e.Message);
             }
         }
-        public void InsertDish()
+        public void InsertDish(int shop)
         {
             try
             {
@@ -68,8 +68,6 @@ namespace Presentation
                    Dish dishes = new Dish();
                    DishBL dishBL = new DishBL();
                    
-                   Console.Write("Shop: ");
-                   int shop = Convert.ToInt32(Console.ReadLine());
                    List<Dish> listdish = dishBL.GetDishID();
                    int x = random.Next(1 ,500);
                    foreach(Dish dish in listdish)
@@ -114,7 +112,7 @@ namespace Presentation
                        char key = Convert.ToChar(Console.ReadLine());
                        if(key == 'y')
                        {
-                           InsertDish();
+                           InsertDish(shop);
                        }
                        
                    }
@@ -125,13 +123,10 @@ namespace Presentation
 
             }
         }
-        public void DisplayAllDish()
+        public void DisplayAllDish(int shop)
         {
                 while(true)
                 {
-                    Console.WriteLine("Shop: ");
-                    int shop = Convert.ToInt32(Console.ReadLine());
-
                     DishBL dishBL = new DishBL();
                     List<Dish> dishes = dishBL.GetAllDish(shop);
                     if(dishes != null)
@@ -155,13 +150,10 @@ namespace Presentation
                     }
                 }
         }
-        public void DisplayAllCategory()
+        public void DisplayAllCategory(int shop)
         {
             while(true)
             {
-                Console.WriteLine("Shop: ");
-                int shop = Convert.ToInt32(Console.ReadLine());
-
                 CategoryBL categoryBL = new CategoryBL();
                 List<Category> categories = categoryBL.GetAllCategory(shop);
                 if(categories != null)
@@ -202,13 +194,13 @@ namespace Presentation
             switch(choice)
             {
                 case 1:
-                InsertCate();
+                InsertCate(shop);
                 break;
                 case 2:
-                EditCate();
+                EditCate(shop);
                 break;
                 case 3:
-
+                DisplayDishofCategory(shop);
                 break;
                 case 4:
                 break;
@@ -216,10 +208,8 @@ namespace Presentation
                 break;
             }
         }
-        public void DisplayDishofCategory()
+        public void DisplayDishofCategory(int shop)
         {
-            Console.WriteLine("Shop: ");
-            int shop = Convert.ToInt32(Console.ReadLine());
             Console.Write("What do you want to see category ? (Input CategoryID) : ");
             int categoryID = Convert.ToInt32(Console.ReadLine());
             Category category = new Category();
@@ -243,7 +233,7 @@ namespace Presentation
                 Console.WriteLine();
             }
         }
-        public void InsertCate()
+        public void InsertCate(int shop)
         {
             try
             {
@@ -254,8 +244,6 @@ namespace Presentation
                    Category category = new Category();
                    CategoryBL cateBL = new CategoryBL();
                    
-                   Console.Write("Shop: ");
-                   int shop = Convert.ToInt32(Console.ReadLine());
                    List<Category> catelist = cateBL.GetCateID();
                    int x = random.Next(1 ,50);
                    foreach(Category cate in catelist)
@@ -292,7 +280,7 @@ namespace Presentation
                        char key = Convert.ToChar(Console.ReadLine());
                        if(key == 'y')
                        {
-                           InsertCate();
+                           InsertCate(shop);
                        }  
                    }
                 }
@@ -302,7 +290,7 @@ namespace Presentation
 
             }
         }
-        public void EditCate()
+        public void EditCate(int shop)
         {
             try
             {

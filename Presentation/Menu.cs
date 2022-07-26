@@ -26,10 +26,10 @@ namespace Presentation
                 switch(choice)
                 {
                     case 1:
-                       md.ManagementDishes();
+                       md.ManagementDishes(shop);
                        break;
                     case 2:
-                       mo.ManagenmentOrder(); 
+                       mo.ManagenmentOrder(shop); 
                        break;
                     case 3:
                        mr.ManagenmentRevenue(shop);

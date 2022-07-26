@@ -67,6 +67,10 @@ namespace Presentation
                             menu.MainMenu(shop); 
                             ManagementRevenue mr = new ManagementRevenue();
                             mr.ManagenmentRevenue(shop);
+                            ManageOrder mo = new ManageOrder();
+                            mo.ManagenmentOrder(shop);
+                            ManagementDish md = new ManagementDish();
+                            md.ManagementDishes(shop);
                         }
                         else
                         {

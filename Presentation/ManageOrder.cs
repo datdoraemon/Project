@@ -6,7 +6,7 @@ namespace Presentation
 {
     public class ManageOrder
     {
-        public void ManagenmentOrder()
+        public void ManagenmentOrder(int shop)
         {
             while(true)
             {
@@ -14,11 +14,10 @@ namespace Presentation
                 int choice;
       
                 var table = new ConsoleTable("MANAGEMENT ORDER");
-                table.AddRow("1. DISPLAY RECENTLY ORDER");
-                table.AddRow("2. SEARCH ORDERS BY DATE");
-                table.AddRow("3. SEARCH ORDERS BY DISH NAME");
-                table.AddRow("4. SEARCH ORDER BY STATUS");
-                table.AddRow("5. BACK TO MAIN MENU.");
+                table.AddRow("1. SEARCH ORDERS BY DATE");
+                table.AddRow("2. SEARCH ORDERS BY DISH NAME");
+                table.AddRow("3. SEARCH ORDER BY STATUS");
+                table.AddRow("4. BACK TO MAIN MENU.");
                 table.Write();
                 Console.WriteLine();
                 Console.Write("YOUR CHOICE : ");
@@ -26,18 +25,15 @@ namespace Presentation
                 switch(choice)
                 {
                     case 1:
-                       
+                       SearchbyDate(shop);
                        break;
                     case 2:
-                       SearchbyDate();
-                       break;
+                      SearchbyDishName(shop);
+                      break;
                     case 3:
-                      SearchbyDishName();
+                      FillStatus(shop);
                       break;
                     case 4:
-                      FillStatus();
-                      break;
-                    case 5:
                       bool test = false;
                       if(test == false)
                       {
@@ -51,14 +47,12 @@ namespace Presentation
                 break;
             }
         }
-        public void SearchbyDate()
+        public void SearchbyDate(int shop)
         {
             try
             {
                 while(true)
                 {
-                    Console.WriteLine("Shop: ");
-                    int shop = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Date: ");
                     DateTime date = Convert.ToDateTime(Console.ReadLine());
                     OrderBL orderBL = new OrderBL();
@@ -96,14 +90,12 @@ namespace Presentation
                 Console.WriteLine(e.Message);
             }
         }
-        public void SearchbyDishName()
+        public void SearchbyDishName(int shop)
         {
             try
              {
                 while(true)
                 {
-                    Console.WriteLine("Shop: ");
-                    int shop = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Dish Name: ");
                     string dish = Convert.ToString(Console.ReadLine());
                     OrderBL orderBL = new OrderBL();
@@ -174,7 +166,7 @@ namespace Presentation
                         }
                         else
                         {
-                            FillStatus();
+                            FillStatus(shop);
                         }
                     } 
                 }
@@ -184,15 +176,13 @@ namespace Presentation
                  Console.WriteLine(e.Message);
              }
         }
-        public void FillStatus()
+        public void FillStatus(int shop)
         {
             try
             {
                 while(true)
                 {
                     string key;
-                    Console.WriteLine("Shop: ");
-                    int shop = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Do you want to see status of orders ? ");
                     Console.WriteLine("(press '1' to see status 'Da thanh toan', '2' to see status 'Dang giao') ");
                     Console.WriteLine("YOUR CHOICE : ");
