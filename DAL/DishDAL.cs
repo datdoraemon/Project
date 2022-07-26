@@ -32,13 +32,13 @@ public class DishDAL
         MySqlDataReader reader = DBHelper.ExecQuery(query);
         Dish dishes = null;
         List<Dish> dishlist = new List<Dish>();
-            while(reader.Read())
-            {
-                dishes = GetDish(reader);
-                dishlist.Add(dishes);
-            }
-            DBHelper.CloseConnection();
-            return dishlist;
+        while(reader.Read())
+        {
+            dishes = GetDish(reader);
+            dishlist.Add(dishes);
+        }
+        DBHelper.CloseConnection();
+        return dishlist;
     }
     public void InsertDish(Dish ds)
     {

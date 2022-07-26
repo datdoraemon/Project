@@ -8,8 +8,8 @@ namespace Presentation
     {
         static void Main(string[] args)
         {
-            Menu menu =new Menu();
-            menu.MainMenu();
+            SignIn signIn = new SignIn();
+            signIn.InputUserName();
         }
     }   
 }
