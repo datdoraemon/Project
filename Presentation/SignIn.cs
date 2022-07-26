@@ -54,6 +54,7 @@ namespace Presentation
                 }
                 else
                 {
+                    Salesman salesman = new Salesman();
                     SalesmanBL salesmanBL = new SalesmanBL();
                     List<Salesman> salesmenlist = salesmanBL.GetPassword();
                     foreach (Salesman sales in salesmenlist)
@@ -61,8 +62,11 @@ namespace Presentation
                         if(sales.Password == CreateMD5(password))
                         {
                             Console.WriteLine("Sign in success !");
+                            int shop = sales.ShopID;
                             Menu menu = new Menu();
-                            menu.MainMenu();
+                            menu.MainMenu(shop); 
+                            ManagementRevenue mr = new ManagementRevenue();
+                            mr.ManagenmentRevenue(shop);
                         }
                         else
                         {
@@ -83,5 +87,6 @@ namespace Presentation
                 return builder.ToString();
             }
         }
+        
     }
 }

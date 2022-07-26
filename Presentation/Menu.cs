@@ -9,7 +9,7 @@ namespace Presentation
         ManageOrder mo = new ManageOrder();
         ManagementRevenue mr = new ManagementRevenue();
         ManagementDish md = new ManagementDish();
-        public void MainMenu()
+        public void MainMenu(int shop)
         {
             while (true)
             {
@@ -32,7 +32,7 @@ namespace Presentation
                        mo.ManagenmentOrder(); 
                        break;
                     case 3:
-                       mr.ManagenmentRevenue();
+                       mr.ManagenmentRevenue(shop);
                         break;
                     default:
                       Console.WriteLine("Choose 1-3");

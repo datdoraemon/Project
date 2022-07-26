@@ -11,11 +11,6 @@ namespace BL
         {
             salesmanDAL = new SalesmanDAL();
         }
-        public List<Salesman> Salesmen(int shop)
-        {
-            List<Salesman> sales = salesmanDAL.GetSales(shop);
-            return sales;
-        }
         public List<Salesman> GetUserNAme(string username)
         {
             List<Salesman> sales = salesmanDAL.GetUserName(username);

@@ -3,7 +3,7 @@ using DAL;
 
 namespace BL
 {
-    public class RevenueBL
+    public class RevenueBL : OrderBL
     {
         private RevenueDAL revenueDAL;
 

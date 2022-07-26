@@ -6,7 +6,7 @@ namespace Presentation
 {
     public class ManagementRevenue
     {
-        public void ManagenmentRevenue()
+        public void ManagenmentRevenue(int shop)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace Presentation
                    switch(choice)
                    {
                       case 1:
-                       SearchRevenueDay();
+                       SearchRevenueDay(shop);
                        break;
                       case 2:
                        SearchRevenueMonth();
@@ -50,14 +50,12 @@ namespace Presentation
               Console.WriteLine(e.Message);
             }
         }
-        public void SearchRevenueDay()
+        public void SearchRevenueDay(int shop)
         {
             try
             {
                 while(true)
                 {
-                    Console.WriteLine("Shop: ");
-                    int shop = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Date: ");
                     DateTime dates = Convert.ToDateTime(Console.ReadLine());
                     RevenueBL revenueBL = new RevenueBL();

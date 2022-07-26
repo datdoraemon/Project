@@ -1,5 +1,5 @@
 ﻿namespace Persistence;
-public class Order
+public class Order : Salesman
 {
     public int OrderId {get; set;}
     public DateTime Dates {get; set;}

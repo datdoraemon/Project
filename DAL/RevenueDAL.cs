@@ -3,7 +3,7 @@ using MySql.Data.MySqlClient;
 
 namespace DAL
 {
-    public class RevenueDAL
+    public class RevenueDAL : SalesmanDAL
     {
         public Revenue GetRevenueByDay(MySqlDataReader reader)
         {
