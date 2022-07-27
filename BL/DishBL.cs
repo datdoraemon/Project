@@ -29,5 +29,10 @@ namespace BL
             List<Dish> dishes = dishDAL.GetDishID();
             return dishes;
         }
+        public List<Dish> GetSearchDish(int shop ,string name)
+        {
+            List<Dish> dishes = dishDAL.GetSearchDish(shop ,name);
+            return dishes;
+        }
     }
 }

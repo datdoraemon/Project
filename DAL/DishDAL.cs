@@ -43,7 +43,6 @@ public class DishDAL
     public void InsertDish(Dish ds)
     {
         string query = $"insert Dish(dishID, dishName,amount,unit_price,date_of_manufacture,expiry) values('{ds.DishID}','{ds.DishName}','{ds.Amount}','{ds.Price}','{ds.DateofManufacture}','{ds.Expiry}')";
-        Console.WriteLine(query);
         
         DBHelper.OpenConnection();
         MySqlDataReader reader = DBHelper.ExecQuery(query);
@@ -68,6 +67,24 @@ public class DishDAL
         while(reader.Read())
         {
             dishes = GetID(reader);
+            dishlist.Add(dishes);
+        }
+        DBHelper.CloseConnection();
+        return dishlist;
+    }
+    public List<Dish> GetSearchDish(int shop, string name)
+    {
+        string query = @"select ds.dishID,ds.dishName ,ds.amount, ds.unit_price, ds.date_of_manufacture, ds.expiry from Dish ds
+                         inner join ShopDish sd on ds.dishID = sd.dishID
+                         inner join Shop s on sd.shopID = s.shopID
+                         where s.shopID = " + shop + " and ds.dishName like '%" + name + "%'";
+        DBHelper.OpenConnection();
+        MySqlDataReader reader = DBHelper.ExecQuery(query);
+        Dish dishes = null;
+        List<Dish> dishlist = new List<Dish>();
+        while(reader.Read())
+        {
+            dishes = GetDish(reader);
             dishlist.Add(dishes);
         }
         DBHelper.CloseConnection();

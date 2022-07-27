@@ -177,5 +177,13 @@ namespace DAL
            MySqlDataReader reader = DBHelper.ExecQuery(query);
            DBHelper.CloseConnection();
         }
+        public void InsertDishToCate(int dishID, int cateID)
+        {
+            string query = $"insert CateDish(dishID ,categoryID) values ('{dishID}','{cateID}')";
+        
+           DBHelper.OpenConnection();
+           MySqlDataReader reader = DBHelper.ExecQuery(query);
+           DBHelper.CloseConnection();
+        }
     }
 }

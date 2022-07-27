@@ -32,11 +32,8 @@ namespace Presentation
                        SearchRevenueMonth(shop);
                        break;
                       case 3:
-                      bool test = false;
-                      if(test == false)
-                      {
-                         break;
-                      }
+                      Menu m = new Menu();
+                      m.MainMenu(shop);
                       break;
                       default:
                       Console.WriteLine("Choose 1-3");
@@ -54,37 +51,45 @@ namespace Presentation
         {
             try
             {
-                while(true)
+                do
                 {
-                    Console.WriteLine("Date: ");
+                    Console.Clear();
+                    Console.Write("Date: ");
                     DateTime dates = Convert.ToDateTime(Console.ReadLine());
-                    RevenueBL revenueBL = new RevenueBL();
-                    List<Revenue> revenues = revenueBL.GetRevenueByDates(dates,shop);
-                    if(revenues != null)
+                    if(String.IsNullOrEmpty(dates.ToString("yyyy-MM-dd")))
                     {
-                        var table = new ConsoleTable("DATE","AMOUNT ORDER IN DAY","TOTAL DISHES SOLD","REVENUE OF DAY");
-                        foreach(Revenue revenue in revenues)
-                        {
-                           if(dates == revenue.Dates)
-                           {
-                              table.AddRow(revenue.Dates,revenue.Count,revenue.Sold,revenue.Sum_Revenue_Day);
-                           }
-                           else
-                           {
-                              Console.WriteLine("No result.");
-                           }
-                        }
-                        table.Write();
-                        Console.WriteLine();
-
-                        Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
-                        char check = Convert.ToChar(Console.ReadLine());
-                        if(check == 'n')
-                        {
-                           break;
-                        }
+                        SearchRevenueDay(shop);
                     }
-                }
+                    else
+                    {
+                       RevenueBL revenueBL = new RevenueBL();
+                       List<Revenue> revenues = revenueBL.GetRevenueByDates(dates,shop);
+                       if(revenues != null)
+                       {
+                          var table = new ConsoleTable("DATE","AMOUNT ORDER IN DAY","TOTAL DISHES SOLD","REVENUE OF DAY");
+                          foreach(Revenue revenue in revenues)
+                          {
+                            if(dates == revenue.Dates)
+                            {
+                                table.AddRow(revenue.Dates,revenue.Count,revenue.Sold,revenue.Sum_Revenue_Day);
+                            }
+                            else
+                            {
+                                Console.WriteLine("No result. Try again !");
+                            }
+                          }
+                          table.Write();
+                          Console.WriteLine();
+
+                          Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                          char check = Convert.ToChar(Console.ReadLine());
+                          if(check == 'n')
+                          {
+                            ManagenmentRevenue(shop);
+                          }
+                       }
+                    }
+                } while(true) ;
             }
             catch (Exception e)
             {
@@ -95,41 +100,49 @@ namespace Presentation
         {
             try
             {
-                while(true)
+                do
                 {
+                    Console.Clear();
                     Console.WriteLine("Month : ");
                     string month = Convert.ToString(Console.ReadLine());
-                    if(month.Length == 1)
+                    if(String.IsNullOrEmpty(month))
                     {
-                        month = "0" + month;
+                        SearchRevenueMonth(shop);
                     }
-                    RevenueBL revenueBL = new RevenueBL();
-                    List<Revenue> revenues = revenueBL.GetRevenueByMonth(month,shop);
-                    if(revenues != null)
+                    else
                     {
-                        var table = new ConsoleTable("MONTH","AMOUNT ORDER IN MONTH","TOTAL DISHES SOLD","REVENUE OF MONTH");
-                        foreach(Revenue revenue in revenues)
+                        if(month.Length == 1)
                         {
-                           if(month == revenue.Dates.ToString("yyyy-MM-dd").Substring(5,2))
-                           {
-                              table.AddRow(revenue.Dates,revenue.Count,revenue.Sold,revenue.Sum_Revenue_Month);
-                           }
-                           else
-                           {
-                              Console.WriteLine("No result.");
-                           }
+                            month = "0" + month;
                         }
-                        table.Write();
-                        Console.WriteLine();
+                        RevenueBL revenueBL = new RevenueBL();
+                        List<Revenue> revenues = revenueBL.GetRevenueByMonth(month,shop);
+                        if(revenues != null)
+                        {
+                            var table = new ConsoleTable("MONTH","AMOUNT ORDER IN MONTH","TOTAL DISHES SOLD","REVENUE OF MONTH");
+                            foreach(Revenue revenue in revenues)
+                            {
+                               if(month == revenue.Dates.ToString("yyyy-MM-dd").Substring(5,2))
+                               {
+                                    table.AddRow(revenue.Dates,revenue.Count,revenue.Sold,revenue.Sum_Revenue_Month);
+                               }
+                               else
+                               {
+                                  Console.WriteLine("No result. Tr again !");
+                               }
+                            }
+                            table.Write();
+                            Console.WriteLine();
                         
-                        Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
-                        char check = Convert.ToChar(Console.ReadLine());
-                        if(check == 'n')
-                        {
-                           break;
+                            Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                            char check = Convert.ToChar(Console.ReadLine());
+                            if(check == 'n')
+                            {
+                               ManagenmentRevenue(shop);
+                            }
                         }
                     }
-                }
+                } while (true);
             }
             catch (Exception e)
             {

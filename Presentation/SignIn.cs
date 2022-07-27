@@ -1,6 +1,7 @@
 using BL;
 using Persistence;
 using System.Text;
+using System.Threading;
 
 namespace Presentation
 {
@@ -8,13 +9,14 @@ namespace Presentation
     {
         public void InputUserName()
         {
-            Console.WriteLine("====================");
-            Console.WriteLine("SIGN IN");
-            Console.WriteLine("====================");
             while (true)
             {
                 do
                 {
+                    Console.Clear();
+                    Console.WriteLine("====================");
+                    Console.WriteLine("SIGN IN");
+                    Console.WriteLine("====================");
                     Console.Write("UserName : ");
                     string username = Convert.ToString(Console.ReadLine());
                     if(username == null)
@@ -62,6 +64,7 @@ namespace Presentation
                         if(sales.Password == CreateMD5(password))
                         {
                             Console.WriteLine("Sign in success !");
+                            Thread.Sleep(2000);
                             int shop = sales.ShopID;
                             Menu menu = new Menu();
                             menu.MainMenu(shop); 

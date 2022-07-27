@@ -34,11 +34,8 @@ namespace Presentation
                       FillStatus(shop);
                       break;
                     case 4:
-                      bool test = false;
-                      if(test == false)
-                      {
-                         break;
-                      }
+                      Menu m = new Menu();
+                      m.MainMenu(shop);
                       break;
                     default:
                       Console.WriteLine("Choose 1-5");
@@ -51,7 +48,7 @@ namespace Presentation
         {
             try
             {
-                while(true)
+                do
                 {
                     Console.WriteLine("Date: ");
                     DateTime date = Convert.ToDateTime(Console.ReadLine());
@@ -83,7 +80,7 @@ namespace Presentation
                             break;
                         }
                     }
-                }
+                } while(true);
             }
             catch (Exception e)
             {
@@ -93,45 +90,51 @@ namespace Presentation
         public void SearchbyDishName(int shop)
         {
             try
-             {
-                while(true)
+            {
+                do
                 {
                     Console.WriteLine("Dish Name: ");
                     string dish = Convert.ToString(Console.ReadLine());
                     OrderBL orderBL = new OrderBL();
                     List<Order> orders = orderBL.GetOrderByDishes(dish,shop);
-                
-                    if(orders != null)
+                    if (String.IsNullOrEmpty(dish))
                     {
-                        Console.Clear();
-                        var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","DISH","AMOUNT","TOTAL","STATUS");
-                        foreach(Order order in orders)
+                        SearchbyDishName(shop);
+                    }
+                    else
+                    {
+                        if(orders != null)
                         {
-                           if(dish == order.Dish_Name || order.Dish_Name.ToString().ToUpper().Contains(dish.ToUpper()))
-                           {
-                                table.AddRow(order.OrderId,order.Dates,order.Customer_Name,order.Salesman_Name,order.Dish_Name,order.Quantity,order.Total,order.Status);
-                           }
-                           else
-                           {
-                              Console.WriteLine("No result.");
-                           }
-                        }
-                        table.Write();
-                        Console.WriteLine();
+                            Console.Clear();
+                            var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","DISH","AMOUNT","TOTAL","STATUS");
+                            foreach(Order order in orders)
+                            {
+                                if(dish == order.Dish_Name || order.Dish_Name.ToString().ToUpper().Contains(dish.ToUpper()))
+                                {
+                                    table.AddRow(order.OrderId,order.Dates,order.Customer_Name,order.Salesman_Name,order.Dish_Name,order.Quantity,order.Total,order.Status);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("No result.");
+                                }
+                                table.Write();
+                                Console.WriteLine();
 
-                        Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
-                        char check = Convert.ToChar(Console.ReadLine());
-                        if(check == 'n')
-                        {
-                            break;
-                        }
-                    } 
-                }
-             }
-             catch(Exception e)
-             {
-                 Console.WriteLine(e.Message);
-             }
+                                Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                                char check = Convert.ToChar(Console.ReadLine());
+                                if(check == 'n')
+                                {
+                                    break;
+                                }
+                            } 
+                        }   
+                    }    
+                } while(true);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         public void SearchbyStatus(string status ,int shop)
         {

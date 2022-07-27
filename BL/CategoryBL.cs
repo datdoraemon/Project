@@ -65,5 +65,9 @@ namespace BL
         {
             categoryDAL.UpdateDishAtExpiry(cate);
         }
+        public void InsertDishofCate(int dishID, int cateID)
+        {
+            categoryDAL.InsertDishToCate(dishID,cateID);
+        }
     }
 }
