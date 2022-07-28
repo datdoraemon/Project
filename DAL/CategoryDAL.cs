@@ -109,22 +109,29 @@ namespace DAL
            DBHelper.CloseConnection();
            return catelist;
         }
-        public void EditCate(Category cate)
+        public void EditCate(string newname,int cateID)
         {
-           string query = $"update Category set categoryName = {cate.CategoryName} where categoryID = {cate.CategoryID}";
+           string query = $"update Category set categoryName = '{newname}' where categoryID = {cateID}";
         
            DBHelper.OpenConnection();
            MySqlDataReader reader = DBHelper.ExecQuery(query);
+           Category categories = null;
+           List<Category> catelist = new List<Category>();
+           while(reader.Read())
+           {
+              categories = GetCategory(reader);
+              catelist.Add(categories);
+           }
            DBHelper.CloseConnection();
         }
-        public List<Category> DisplayDetailDish(Category cate, int shop)
+        public List<Category> DisplayDetailDish(int shop, int key)
         {
             string query = @"select ds.dishID,ds.dishName ,ds.amount, ds.unit_price, ds.date_of_manufacture, ds.expiry from Dish ds
                              inner join CateDish cd on ds.dishID = cd.dishID
                              inner join Category c on cd.categoryID = c.categoryID
                              inner join CateShop cs on c.categoryID = cs.categoryID
                              inner join Shop s on cs.shopID = s.shopID
-                             where s.shopID = " + shop +" and c.categoryName = " + cate.CategoryName;
+                             where s.shopID = " + shop +" and ds.dishID = " + key;
            DBHelper.OpenConnection();
            MySqlDataReader reader = DBHelper.ExecQuery(query);
            Category categories = null;
@@ -137,9 +144,9 @@ namespace DAL
            DBHelper.CloseConnection();
            return catelist;               
         }
-        public void UpdateDishAtDishName(Category cate)
+        public void UpdateDishAtDishName(string key,Category cate)
         {
-           string query = $"update Dish set dishName = {cate.DishName} where dishID = {cate.DishID}";
+           string query = $"update Dish set dishName = {key} where dishID = {cate.DishID}";
         
            DBHelper.OpenConnection();
            MySqlDataReader reader = DBHelper.ExecQuery(query);

@@ -12,7 +12,7 @@ namespace Presentation
             {
                while(true)
                {
-                   Console.Clear();
+                   
                    int choice;
                    var table = new ConsoleTable("REVENUE MANAGEMENT");
                    table.AddRow("1.REVENUE BY DAY");
@@ -53,10 +53,10 @@ namespace Presentation
             {
                 do
                 {
-                    Console.Clear();
                     Console.Write("Date: ");
                     DateTime dates = Convert.ToDateTime(Console.ReadLine());
-                    if(String.IsNullOrEmpty(dates.ToString("yyyy-MM-dd")))
+                    Console.WriteLine(dates.ToString("yyyy-MM-dd").Trim());
+                    if(String.IsNullOrEmpty(dates.ToString("yyyy-MM-dd").Trim()))
                     {
                         SearchRevenueDay(shop);
                     }

@@ -36,18 +36,18 @@ namespace BL
             List<Category> categories = categoryDAL.GetCateID();
             return categories;
         }
-        public void EditCate(Category cate)
+        public void EditCate(string newname, int cateID)
         {
-            categoryDAL.EditCate(cate);
+            categoryDAL.EditCate(newname,cateID);
         }
-        public List<Category> DisplayDishofCate(Category cate,int shop)
+        public List<Category> DisplayDetailDishofCate(int shop, int key)
         {
-            List<Category> categories = categoryDAL.DisplayDetailDish(cate, shop);
+            List<Category> categories = categoryDAL.DisplayDetailDish(shop ,key);
             return categories;
         }
-        public void UpdateName(Category cate)
+        public void UpdateName(string key, Category cate)
         {
-            categoryDAL.UpdateDishAtDishName(cate);
+            categoryDAL.UpdateDishAtDishName(key, cate);
         }
         public void UpdateAmount(Category cate)
         {

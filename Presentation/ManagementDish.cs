@@ -246,6 +246,7 @@ namespace Presentation
                     InsertDishToCate(cateID,shop);
                     break;
                     case 2:
+                    Category cate = new Category();
                     DisplayDetailDish(shop);
                     break;
                     case 3:
@@ -320,18 +321,43 @@ namespace Presentation
             {
                while(true)
                {
+                   Console.Clear();
                    Category category = new Category();
                    Console.WriteLine("What do you want to edit ? (Input categoryID)");
                    int cateID = Convert.ToInt32(Console.ReadLine());
                    Console.Write("New category name is : "); 
-                   category.CategoryName = Convert.ToString(Console.ReadLine());
+                   string newname = Convert.ToString(Console.ReadLine());
                    Console.Write("Do you want to save this change ? (Input 'y' to save, 'n' to not save)");
                    char key = Convert.ToChar(Console.ReadLine());
                    if(key == 'y')
                    {
                        CategoryBL categoryBL = new CategoryBL();
-                       categoryBL.EditCate(category);
-                       Console.WriteLine("Update success !");
+                       List<Category> catlist = categoryBL.GetAllCategory(shop);
+                       foreach(Category cat in catlist)
+                       {
+                           if(newname != cat.CategoryName)
+                           {
+                               categoryBL.EditCate(newname,cateID);
+                               Console.WriteLine("Update success !");
+                               break;
+                           }
+                           else
+                           {
+                               Console.Write("Name exist. Do you want to save ? (y/n) : ");
+                               char check = Convert.ToChar(Console.ReadLine());
+                               if(check == 'y')
+                               {
+                                   categoryBL.EditCate(newname,cateID);
+                                   Console.WriteLine("Update success !");
+                                   break;
+                               }
+                               else
+                               {
+                                   break;
+                               }
+                           }
+                       }
+                       
                    }
                    Console.WriteLine("Do you want to continue ?(Input 'y' to save, 'n' to not save)");
                    char key1 = Convert.ToChar(Console.ReadLine());
@@ -351,29 +377,30 @@ namespace Presentation
             Console.Clear();
             Category category = new Category();
             CategoryBL categoryBL = new CategoryBL();
-            List<Category> catelist = categoryBL.DisplayDishofCate(category,shop);
+            
             do
             {
                 Console.Write("Input dishID : ");
                 int key = Convert.ToInt32(Console.ReadLine());
-                foreach(Category cate in catelist)
+                List<Category> catelist = categoryBL.DisplayDetailDishofCate(shop,key);
+                foreach(Category cat in catelist)
                 {
-                   if(key == cate.CategoryID)
+                   if(key == cat.DishID)
                    {
                       Console.WriteLine("====================");
                       Console.WriteLine("DETAIL DISH");
                       Console.WriteLine("====================");
-                      Console.Write("1.Dish Name : " + cate.CategoryName);
-                      Console.Write("2.Amount : " + cate.Amount);
-                      Console.Write("3.Price : " + cate.Price);
-                      Console.Write("4.Date of manufacture : " + cate.DateofManufacture);
-                      Console.Write("5.Expiry : " + cate.Expiry);
+                      Console.WriteLine("1.Dish Name : " + cat.DishName);
+                      Console.WriteLine("2.Amount : " + cat.Amount);
+                      Console.WriteLine("3.Price : " + cat.Price);
+                      Console.WriteLine("4.Date of manufacture : " + cat.DateofManufacture);
+                      Console.WriteLine("5.Expiry : " + cat.Expiry);
                       Console.WriteLine("==========================");
                       Console.Write("Do you want to update information of dish ? (Input 'y' to update , 'n' to exit)");
                       char check = Convert.ToChar(Console.ReadLine());
                       if(check == 'y')
                       {
-                         Update(category,key);
+                         Update(category,key,shop);
                       }
                       else
                       {
@@ -388,7 +415,7 @@ namespace Presentation
                 }
             } while(true);
         }
-        public void Update(Category category, int key)
+        public void Update(Category category, int key,int shop)
         {
             do
             {
@@ -397,7 +424,10 @@ namespace Presentation
                 int num = Convert.ToInt32(Console.ReadLine());
                 if(num == 1)
                 {
-                    cate.UpdateName(category);
+                    Console.Write("New dish name : ");
+                    string check = UpdateString();
+                    cate.UpdateName(check,category);
+                    Console.Write("Update success !");
                 }
                 if(num == 2)
                 {
@@ -419,6 +449,16 @@ namespace Presentation
                 {
                     Console.Write("Input 1 - 5");
                 }  
+                Console.Write("Do you want to continue ? (y/n)");
+                char check1 = Convert.ToChar(Console.ReadLine());
+                if(check1 == 'n')
+                {
+                    ManagementDishes(shop);
+                }
+                else
+                {
+                    continue;
+                }
             } while(true);
         }
         public void Search(int shop)
@@ -483,15 +523,15 @@ namespace Presentation
                 int dishID = Convert.ToInt32(Console.ReadLine());
                 foreach(Dish ds in dishlist)
                 {
-                    if(dishID == ds.DishID)
+                    if(dishID != ds.DishID)
                     {
-                        categoryBL.InsertDishofCate(cateID,dishID);
+                        categoryBL.InsertDishofCate(dishID, cateID);
                         Console.WriteLine("Add success !");
                         break;
                     }
                     else
                     {
-                        Console.WriteLine("Not found");
+                        Console.WriteLine("Dish exsits or not found dish in list.");
                         break;
                     }
                 }
@@ -506,6 +546,22 @@ namespace Presentation
                     ManagementDishes(shop);
                 }
             } while(true);
+        }
+        public string UpdateString()
+        {
+            do
+            {
+                string key = Convert.ToString(Console.ReadLine());
+                if(String.IsNullOrEmpty(key))
+                {
+                    Console.WriteLine("Not null.");
+                    continue;
+                }
+                else
+                {
+                    return key;
+                }
+            } while (true);
         }
     }
 }
