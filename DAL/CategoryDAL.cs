@@ -144,41 +144,41 @@ namespace DAL
            DBHelper.CloseConnection();
            return catelist;               
         }
-        public void UpdateDishAtDishName(string key,Category cate)
+        public void UpdateDishAtDishName(string check, int key)
         {
-           string query = $"update Dish set dishName = {key} where dishID = {cate.DishID}";
+           string query = $"update Dish set dishName = '{check}' where dishID = {key}";
         
            DBHelper.OpenConnection();
            MySqlDataReader reader = DBHelper.ExecQuery(query);
            DBHelper.CloseConnection();
         }
-        public void UpdateDishAtAmount(Category cate)
+        public void UpdateDishAtAmount(int check, int key)
         {
-           string query = $"update Dish set amount = {cate.Amount} where dishID = {cate.DishID}";
+           string query = $"update Dish set amount = {check} where dishID = {key}";
         
            DBHelper.OpenConnection();
            MySqlDataReader reader = DBHelper.ExecQuery(query);
            DBHelper.CloseConnection();
         }
-        public void UpdateDishAtPrice(Category cate)
+        public void UpdateDishAtPrice(double check ,int key)
         {
-           string query = $"update Dish set unit_price = {cate.Price} where dishID = {cate.DishID}";
+           string query = $"update Dish set unit_price = {check} where dishID = {key}";
         
            DBHelper.OpenConnection();
            MySqlDataReader reader = DBHelper.ExecQuery(query);
            DBHelper.CloseConnection();
         }
-        public void UpdateDishAtManufacture(Category cate)
+        public void UpdateDishAtManufacture(DateTime date, int key)
         {
-           string query = $"update Dish set date_of_manufacture = {cate.DateofManufacture} where dishID = {cate.DishID}";
+           string query = $"update Dish set date_of_manufacture = '{date.ToString("yyyy-MM-dd")}' where dishID = {key}";
         
            DBHelper.OpenConnection();
            MySqlDataReader reader = DBHelper.ExecQuery(query);
            DBHelper.CloseConnection();
         }
-        public void UpdateDishAtExpiry(Category cate)
+        public void UpdateDishAtExpiry(DateTime date, int key)
         {
-           string query = $"update Dish set expiry = {cate.Expiry} where dishID = {cate.DishID}";
+           string query = $"update Dish set expiry = '{date.ToString("yyyy-MM-dd")}' where dishID = {key}";
         
            DBHelper.OpenConnection();
            MySqlDataReader reader = DBHelper.ExecQuery(query);

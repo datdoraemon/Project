@@ -55,8 +55,8 @@ namespace Presentation
                 {
                     Console.Write("Date: ");
                     DateTime dates = Convert.ToDateTime(Console.ReadLine());
-                    Console.WriteLine(dates.ToString("yyyy-MM-dd").Trim());
-                    if(String.IsNullOrEmpty(dates.ToString("yyyy-MM-dd").Trim()))
+                    string date = dates.ToString("yyyy-MM-dd");
+                    if(String.IsNullOrEmpty(date.Trim()))
                     {
                         SearchRevenueDay(shop);
                     }

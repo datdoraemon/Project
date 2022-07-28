@@ -426,29 +426,38 @@ namespace Presentation
                 {
                     Console.Write("New dish name : ");
                     string check = UpdateString();
-                    cate.UpdateName(check,category);
-                    Console.Write("Update success !");
+                    cate.UpdateName(check,key);
+                    Console.WriteLine("Update success !");
                 }
                 if(num == 2)
                 {
-                    cate.UpdateAmount(category);
+                    Console.Write("New Amount : ");
+                    int check = Convert.ToInt32(Console.ReadLine());
+                    cate.UpdateAmount(check,key);
+                    Console.WriteLine("Update success !");
                 }
                 if(num == 3)
                 {
-                    cate.UpdatePrice(category);
+                    Console.Write("New Price : ");
+                    double check = Convert.ToInt32(Console.ReadLine());
+                    cate.UpdatePrice(check,key);
+                    Console.WriteLine("Update success !");
                 }
                 if(num == 4)
                 {
-                    cate.UpdateManufacture(category);
+                    Console.Write("Date of Manufacture : ");
+                    DateTime date = Convert.ToDateTime(Console.ReadLine());
+                    cate.UpdateManufacture(date,key);
+                    Console.WriteLine("Update success !");
                 }
                 if(num == 5)
                 {
-                    cate.UpdateExpiry(category);
+                    Console.Write("Expiry : ");
+                    DateTime date = Convert.ToDateTime(Console.ReadLine());
+                    cate.UpdateExpiry(date ,key);
+                    Console.WriteLine("Update success !");
                 }
-                else
-                {
-                    Console.Write("Input 1 - 5");
-                }  
+                 
                 Console.Write("Do you want to continue ? (y/n)");
                 char check1 = Convert.ToChar(Console.ReadLine());
                 if(check1 == 'n')

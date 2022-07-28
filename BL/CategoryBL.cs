@@ -45,25 +45,25 @@ namespace BL
             List<Category> categories = categoryDAL.DisplayDetailDish(shop ,key);
             return categories;
         }
-        public void UpdateName(string key, Category cate)
+        public void UpdateName(string check ,int key)
         {
-            categoryDAL.UpdateDishAtDishName(key, cate);
+            categoryDAL.UpdateDishAtDishName(check ,key);
         }
-        public void UpdateAmount(Category cate)
+        public void UpdateAmount(int check,int key)
         {
-            categoryDAL.UpdateDishAtAmount(cate);
+            categoryDAL.UpdateDishAtAmount(check, key);
         }
-        public void UpdatePrice(Category cate)
+        public void UpdatePrice(double check, int key)
         {
-            categoryDAL.UpdateDishAtPrice(cate);
+            categoryDAL.UpdateDishAtPrice(check,key);
         }
-        public void UpdateManufacture(Category cate)
+        public void UpdateManufacture(DateTime date,int key)
         {
-            categoryDAL.UpdateDishAtManufacture(cate);
+            categoryDAL.UpdateDishAtManufacture(date,key);
         }
-        public void UpdateExpiry(Category cate)
+        public void UpdateExpiry(DateTime date,int key)
         {
-            categoryDAL.UpdateDishAtExpiry(cate);
+            categoryDAL.UpdateDishAtExpiry(date,key);
         }
         public void InsertDishofCate(int dishID, int cateID)
         {
