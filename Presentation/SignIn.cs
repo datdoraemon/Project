@@ -18,7 +18,7 @@ namespace Presentation
                     Console.WriteLine("SIGN IN");
                     Console.WriteLine("====================");
                     Console.Write("UserName : ");
-                    string username = Convert.ToString(Console.ReadLine());
+                    string? username = Convert.ToString(Console.ReadLine());
                     if(username == null)
                     {
                         Console.WriteLine("Not null . Input again !");
@@ -49,7 +49,7 @@ namespace Presentation
             do
             {
                 Console.Write("Password : ");
-                string password = Convert.ToString(Console.ReadLine());
+                string? password = Convert.ToString(Console.ReadLine());
                 if(password == null)
                 {
                     continue;

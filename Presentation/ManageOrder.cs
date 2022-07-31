@@ -51,15 +51,23 @@ namespace Presentation
                 do
                 {
                     Console.WriteLine("Date: ");
-                    DateTime date = Convert.ToDateTime(Console.ReadLine());
-                    OrderBL orderBL = new OrderBL();
-                    List<Order> orders = orderBL.GetOrderByDates(date,shop);
-                    if(orders != null)
+                    DateTime date;
+                    string? input = Console.ReadLine();
+                    if(String.IsNullOrEmpty(input) || input.Length != 10)
                     {
-                        Console.Clear();
-                        var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","DISH","AMOUNT","TOTAL","STATUS");
-                        foreach(Order order in orders)
+                        SearchbyDate(shop);
+                    }
+                    else
+                    {
+                        DateTime.TryParse(input,out date);
+                        OrderBL orderBL = new OrderBL();
+                        List<Order> orders = orderBL.GetOrderByDates(date,shop);
+                        if(orders != null)
                         {
+                          Console.Clear();
+                          var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","DISH","AMOUNT","TOTAL","STATUS");
+                          foreach(Order order in orders)
+                          {
                             if(date == order.Dates)
                             {
                                 table.AddRow(order.OrderId,order.Dates,order.Customer_Name,order.Salesman_Name,order.Dish_Name,order.Quantity,order.Total,order.Status);
@@ -68,19 +76,20 @@ namespace Presentation
                             {
                                Console.WriteLine("No Result.");
                             }
-                        }
+                          }
                         
-                        table.Write();
-                        Console.WriteLine();
+                          table.Write();
+                          Console.WriteLine();
 
-                        Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
-                        char check = Convert.ToChar(Console.ReadLine());
-                        if(check == 'n')
-                        {
-                            break;
+                          Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                          char check = Convert.ToChar(Console.ReadLine());
+                          if(check == 'n')
+                          {
+                             break;
+                          }
                         }
-                    }
-                } while(true);
+                    } 
+                } while(true);               
             }
             catch (Exception e)
             {
@@ -94,7 +103,7 @@ namespace Presentation
                 do
                 {
                     Console.WriteLine("Dish Name: ");
-                    string dish = Convert.ToString(Console.ReadLine());
+                    string? dish = Convert.ToString(Console.ReadLine());
                     OrderBL orderBL = new OrderBL();
                     List<Order> orders = orderBL.GetOrderByDishes(dish,shop);
                     if (String.IsNullOrEmpty(dish))

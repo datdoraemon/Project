@@ -326,7 +326,7 @@ namespace Presentation
                    Console.WriteLine("What do you want to edit ? (Input categoryID)");
                    int cateID = Convert.ToInt32(Console.ReadLine());
                    Console.Write("New category name is : "); 
-                   string newname = Convert.ToString(Console.ReadLine());
+                   string? newname = Convert.ToString(Console.ReadLine());
                    Console.Write("Do you want to save this change ? (Input 'y' to save, 'n' to not save)");
                    char key = Convert.ToChar(Console.ReadLine());
                    if(key == 'y')
@@ -478,7 +478,7 @@ namespace Presentation
                 {
                     Console.Clear();
                     Console.WriteLine("Input dish name : ");
-                    string name = Convert.ToString(Console.ReadLine());
+                    string? name = Convert.ToString(Console.ReadLine());
                     if(String.IsNullOrEmpty(name))
                     {
                         Search(shop);
@@ -560,7 +560,7 @@ namespace Presentation
         {
             do
             {
-                string key = Convert.ToString(Console.ReadLine());
+                string? key = Convert.ToString(Console.ReadLine());
                 if(String.IsNullOrEmpty(key))
                 {
                     Console.WriteLine("Not null.");

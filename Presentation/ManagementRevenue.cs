@@ -54,14 +54,15 @@ namespace Presentation
                 do
                 {
                     Console.Write("Date: ");
-                    DateTime dates = Convert.ToDateTime(Console.ReadLine());
-                    string date = dates.ToString("yyyy-MM-dd");
-                    if(String.IsNullOrEmpty(date.Trim()))
+                    DateTime dates;
+                    string? input = Console.ReadLine(); 
+                    if(String.IsNullOrEmpty(input.Trim()) || input.Length != 10)
                     {
                         SearchRevenueDay(shop);
                     }
                     else
                     {
+                       DateTime.TryParse(input, out dates);
                        RevenueBL revenueBL = new RevenueBL();
                        List<Revenue> revenues = revenueBL.GetRevenueByDates(dates,shop);
                        if(revenues != null)
@@ -104,7 +105,7 @@ namespace Presentation
                 {
                     Console.Clear();
                     Console.WriteLine("Month : ");
-                    string month = Convert.ToString(Console.ReadLine());
+                    string? month = Convert.ToString(Console.ReadLine());
                     if(String.IsNullOrEmpty(month))
                     {
                         SearchRevenueMonth(shop);
