@@ -90,16 +90,42 @@ namespace Presentation
                        }
                    }
                    Console.WriteLine("Dish ID : "+ dishes.DishID);
-                   Console.Write("Dish Name: ");
-                   dishes.DishName = Convert.ToString(Console.ReadLine());
-                   Console.Write("Amount: ");
-                   dishes.Amount = Convert.ToInt32(Console.ReadLine());
-                   Console.Write("Price : ");
-                   dishes.Price = Convert.ToDouble(Console.ReadLine());
-                   Console.Write("Date of manufacture : ");
-                   dishes.DateofManufacture = Convert.ToDateTime(Console.ReadLine());
-                   Console.Write("Expiry : ");
-                   dishes.Expiry = Convert.ToDateTime(Console.ReadLine());
+                   do
+                   {
+                        Console.Write("Dish Name: ");
+                        dishes.DishName = Convert.ToString(Console.ReadLine());
+                        Console.Write("Amount: ");
+                        string? amount = Console.ReadLine();
+                        Console.Write("Price : ");
+                        string? price = Convert.ToString(Console.ReadLine());
+                        Console.Write("Date of manufacture : ");
+                        string? manu = Convert.ToString(Console.ReadLine());
+                        Console.Write("Expiry : ");
+                        string? ex = Convert.ToString(Console.ReadLine());
+                        if(String.IsNullOrEmpty(dishes.DishName)  || string.IsNullOrEmpty(amount) || string.IsNullOrEmpty(price)
+                        || String.IsNullOrEmpty(manu) || String.IsNullOrEmpty(ex))
+                        {
+                            Console.WriteLine("Not null. Try again !");
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                        else
+                        {
+                            int num;
+                            Int32.TryParse(amount ,out num);
+                            dishes.Amount = num;
+                            double quantity;
+                            Double.TryParse(price, out quantity);
+                            dishes.Price = quantity;
+                            DateTime manufacture;
+                            DateTime.TryParse(manu ,out manufacture);
+                            dishes.DateofManufacture = manufacture;
+                            DateTime expiry;
+                            DateTime.TryParse(ex, out expiry);
+                            dishes.Expiry = expiry;
+                            break;
+                        }
+                   } while (true);
 
                    Console.Write("Do you want to add this dish ?");
                    char check = Convert.ToChar(Console.ReadLine());
@@ -425,40 +451,92 @@ namespace Presentation
                 if(num == 1)
                 {
                     Console.Write("New dish name : ");
-                    string check = UpdateString();
+                    string check = UpdateString();   
                     cate.UpdateName(check,key);
                     Console.WriteLine("Update success !");
                 }
                 if(num == 2)
                 {
-                    Console.Write("New Amount : ");
-                    int check = Convert.ToInt32(Console.ReadLine());
-                    cate.UpdateAmount(check,key);
-                    Console.WriteLine("Update success !");
+                    do 
+                    {
+                        Console.Write("New Amount : ");
+                        string? chain = Console.ReadLine();
+                        if(String.IsNullOrEmpty(chain))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            int check;
+                            Int32.TryParse(chain, out check);
+                            cate.UpdateAmount(check,key);
+                            Console.WriteLine("Update success !");
+                            break;
+                        }
+                    } while(true);
                 }
                 if(num == 3)
                 {
-                    Console.Write("New Price : ");
-                    double check = Convert.ToInt32(Console.ReadLine());
-                    cate.UpdatePrice(check,key);
-                    Console.WriteLine("Update success !");
+                    do 
+                    {
+                       Console.Write("New Price : ");
+                       string? chain = Console.ReadLine();
+                       if(String.IsNullOrEmpty(chain))
+                       {
+                            continue;
+                       }
+                       else
+                       {
+                           double check;
+                           Double.TryParse(chain, out check);
+                           cate.UpdatePrice(check,key);
+                           Console.WriteLine("Update success !");
+                           break;
+                       }
+                    } while(true);
                 }
                 if(num == 4)
                 {
-                    Console.Write("Date of Manufacture : ");
-                    DateTime date = Convert.ToDateTime(Console.ReadLine());
-                    cate.UpdateManufacture(date,key);
-                    Console.WriteLine("Update success !");
+                    do
+                    {
+                        Console.Write("Date of Manufacture : ");
+                        string? chain = Console.ReadLine();
+                        if(String.IsNullOrEmpty(chain))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            DateTime date;
+                            DateTime.TryParse(chain, out date);
+                            cate.UpdateManufacture(date,key);
+                            Console.WriteLine("Update success !");
+                            break;
+                        }
+                    } while (true);
                 }
                 if(num == 5)
                 {
-                    Console.Write("Expiry : ");
-                    DateTime date = Convert.ToDateTime(Console.ReadLine());
-                    cate.UpdateExpiry(date ,key);
-                    Console.WriteLine("Update success !");
+                    do
+                    {
+                        Console.Write("Expiry : ");
+                        string? chain = Console.ReadLine();
+                        if(String.IsNullOrEmpty(chain))
+                        {
+                           continue;
+                        }
+                        else
+                        {
+                           DateTime date;
+                           DateTime.TryParse(chain, out date);
+                           cate.UpdateExpiry(date ,key);
+                           Console.WriteLine("Update success !");
+                           break;
+                        }
+                    } while(true);
                 }
                  
-                Console.Write("Do you want to continue ? (y/n)");
+                Console.Write("Do you want to continue ? (y/n) : ");
                 char check1 = Convert.ToChar(Console.ReadLine());
                 if(check1 == 'n')
                 {
