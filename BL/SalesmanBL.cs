@@ -16,10 +16,15 @@ namespace BL
             List<Salesman> sales = salesmanDAL.GetUserName(username);
             return sales;
         }
-        public List<Salesman> GetPassword()
+        public List<Salesman> GetPassword(string md5)
         {
-            List<Salesman> password = salesmanDAL.GetPassword();
+            List<Salesman> password = salesmanDAL.GetPassword(md5);
             return password;
+        }
+        public List<Salesman> GetShopName(int shop)
+        {
+            List<Salesman> shopname = salesmanDAL.GetShopName(shop);
+            return shopname;
         }
     }
 }

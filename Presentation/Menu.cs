@@ -11,9 +11,24 @@ namespace Presentation
         ManagementDish md = new ManagementDish();
         public void MainMenu(int shop)
         {
+            Console.Clear();
+            SalesmanBL salesmanBL = new SalesmanBL();
+            List<Salesman> shopname = salesmanBL.GetShopName(shop);
+            if(shopname != null)
+            {
+                foreach(Salesman s in shopname)
+                {
+                    if(shop == s.ShopID)
+                    {
+                        string? name = s.ShopName;
+                        Console.WriteLine(name.ToUpper());
+                        break;
+                    }
+                }
+            }
+            Console.WriteLine();
             while (true)
             {
-                Console.Clear();
                 int choice;
                 var table = new ConsoleTable("MENU");
                 table.AddRow("1. Management Dishes");

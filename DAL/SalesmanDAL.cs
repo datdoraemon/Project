@@ -5,6 +5,13 @@ namespace DAL
 {
     public class SalesmanDAL
     {
+        public Salesman GetShop(MySqlDataReader reader)
+        {
+            Salesman salesman = new Salesman();
+            salesman.ShopID = reader.GetInt32("shopID");
+            salesman.ShopName = reader.GetString("shopname");
+            return salesman;
+        }
         public Salesman GetUser(MySqlDataReader reader)
         {
             Salesman salesman = new Salesman();
@@ -34,9 +41,9 @@ namespace DAL
             DBHelper.CloseConnection();
             return saleslist;
         }
-        public List<Salesman> GetPassword()
+        public List<Salesman> GetPassword(string md5)
         {
-            string query = @"select sm.pass,sm.shopID from Salesmans sm";
+            string query = @"select sm.pass,sm.shopID from Salesmans sm where sm.pass = '" + md5 +"'";
             DBHelper.OpenConnection();
             MySqlDataReader reader = DBHelper.ExecQuery(query);
             Salesman salesman = null;
@@ -44,6 +51,21 @@ namespace DAL
             while(reader.Read())
             {
                salesman = GetPass(reader);
+               saleslist.Add(salesman);
+            }
+            DBHelper.CloseConnection();
+            return saleslist;
+        }
+        public List<Salesman> GetShopName(int shop)
+        {
+            string query = @"select s.shopID,s.shopname from Shop s where s.shopID = " + shop;
+            DBHelper.OpenConnection();
+            MySqlDataReader reader = DBHelper.ExecQuery(query);
+            Salesman salesman = null;
+            List<Salesman> saleslist = new List<Salesman>();
+            while(reader.Read())
+            {
+               salesman = GetShop(reader);
                saleslist.Add(salesman);
             }
             DBHelper.CloseConnection();

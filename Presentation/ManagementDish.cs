@@ -76,7 +76,7 @@ namespace Presentation
                        {
                            while(x == dish.DishID)
                            {
-                               x = random.Next(1 ,500); 
+                               x = random.Next(0 ,500); 
                                if(x != dish.DishID)
                                {
                                   dishes.DishID = x;

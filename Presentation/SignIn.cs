@@ -50,6 +50,7 @@ namespace Presentation
             {
                 Console.Write("Password : ");
                 string? password = Convert.ToString(Console.ReadLine());
+                string? md5 = CreateMD5(password);
                 if(password == null)
                 {
                     continue;
@@ -58,10 +59,10 @@ namespace Presentation
                 {
                     Salesman salesman = new Salesman();
                     SalesmanBL salesmanBL = new SalesmanBL();
-                    List<Salesman> salesmenlist = salesmanBL.GetPassword();
+                    List<Salesman> salesmenlist = salesmanBL.GetPassword(md5);
                     foreach (Salesman sales in salesmenlist)
                     {
-                        if(sales.Password == CreateMD5(password))
+                        if(sales.Password == md5)
                         {
                             Console.WriteLine("Sign in success !");
                             Thread.Sleep(2000);
