@@ -98,14 +98,15 @@ namespace Presentation
                         string? amount = Console.ReadLine();
                         Console.Write("Price : ");
                         string? price = Convert.ToString(Console.ReadLine());
-                        Console.Write("Date of manufacture : ");
+                        Console.Write("Date of manufacture (yyyy-MM-dd) : ");
                         string? manu = Convert.ToString(Console.ReadLine());
-                        Console.Write("Expiry : ");
+                        Console.Write("Expiry (yyyy-MM-dd): ");
                         string? ex = Convert.ToString(Console.ReadLine());
                         if(String.IsNullOrEmpty(dishes.DishName)  || string.IsNullOrEmpty(amount) || string.IsNullOrEmpty(price)
-                        || String.IsNullOrEmpty(manu) || String.IsNullOrEmpty(ex))
+                        || String.IsNullOrEmpty(manu) || String.IsNullOrEmpty(ex) || (manu.Substring(4,1) != "-" && manu.Substring(7,1) != "-")
+                        || (ex.Substring(4,1) != "-" && ex.Substring(7,1) != "-"))
                         {
-                            Console.WriteLine("Not null. Try again !");
+                            Console.WriteLine("Not null or define not sure. Try again !");
                             Thread.Sleep(1000);
                             continue;
                         }
