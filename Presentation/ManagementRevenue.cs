@@ -12,7 +12,7 @@ namespace Presentation
             {
                while(true)
                {
-                   
+                   Console.Clear();
                    int choice;
                    var table = new ConsoleTable("REVENUE MANAGEMENT");
                    table.AddRow("1.REVENUE BY DAY");
@@ -53,6 +53,7 @@ namespace Presentation
             {
                 do
                 {
+                    Console.Clear();
                     Console.Write("Date: ");
                     DateTime dates;
                     string? input = Console.ReadLine(); 
@@ -65,30 +66,32 @@ namespace Presentation
                        DateTime.TryParse(input, out dates);
                        RevenueBL revenueBL = new RevenueBL();
                        List<Revenue> revenues = revenueBL.GetRevenueByDates(dates,shop);
+                       bool result = false;
                        if(revenues != null)
                        {
-                          var table = new ConsoleTable("DATE","AMOUNT ORDER IN DAY","TOTAL DISHES SOLD","REVENUE OF DAY");
                           foreach(Revenue revenue in revenues)
                           {
                             if(dates == revenue.Dates)
                             {
-                                table.AddRow(revenue.Dates,revenue.Count,revenue.Sold,revenue.Sum_Revenue_Day);
-                            }
-                            else
-                            {
-                                Console.WriteLine("No result. Try again !");
+                                result = true;
+                                var table = new ConsoleTable("DATE","TOTAL DISHES SOLD","REVENUE OF DAY");
+                                table.AddRow(revenue.Dates.ToString("yyyy-MM-dd"),revenue.Sold,revenue.Sum_Revenue_Day);
+                                table.Write();
+                                Console.WriteLine();
                             }
                           }
-                          table.Write();
-                          Console.WriteLine();
-
-                          Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
-                          char check = Convert.ToChar(Console.ReadLine());
-                          if(check == 'n')
+                        
+                          if(result == false)
                           {
-                            ManagenmentRevenue(shop);
+                              Console.WriteLine("Not found result !");
                           }
                        }
+                        Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                        char check = Convert.ToChar(Console.ReadLine());
+                        if(check == 'n')
+                        {
+                            ManagenmentRevenue(shop);
+                        }
                     }
                 } while(true) ;
             }
@@ -104,10 +107,14 @@ namespace Presentation
                 do
                 {
                     Console.Clear();
-                    Console.WriteLine("Month : ");
+                    Console.Write("Month : ");
                     string? month = Convert.ToString(Console.ReadLine());
-                    if(String.IsNullOrEmpty(month))
+                    Console.Write("Year : ");
+                    string? year = Convert.ToString(Console.ReadLine());
+                    if(String.IsNullOrEmpty(month) || String.IsNullOrEmpty(year) || year.Length != 4)
                     {
+                        Console.WriteLine("Not null / Define not sure. Try again");
+                        Thread.Sleep(1000);
                         SearchRevenueMonth(shop);
                     }
                     else
@@ -116,31 +123,32 @@ namespace Presentation
                         {
                             month = "0" + month;
                         }
+                        bool result = false;
                         RevenueBL revenueBL = new RevenueBL();
-                        List<Revenue> revenues = revenueBL.GetRevenueByMonth(month,shop);
+                        List<Revenue> revenues = revenueBL.GetRevenueByMonth(month,shop,year);
                         if(revenues != null)
                         {
-                            var table = new ConsoleTable("MONTH","AMOUNT ORDER IN MONTH","TOTAL DISHES SOLD","REVENUE OF MONTH");
                             foreach(Revenue revenue in revenues)
                             {
+                               var table = new ConsoleTable("MONTH","TOTAL DISHES SOLD","REVENUE OF MONTH");
                                if(month == revenue.Dates.ToString("yyyy-MM-dd").Substring(5,2))
                                {
-                                    table.AddRow(revenue.Dates,revenue.Count,revenue.Sold,revenue.Sum_Revenue_Month);
-                               }
-                               else
-                               {
-                                  Console.WriteLine("No result. Tr again !");
-                               }
+                                   result = true;
+                                   table.AddRow(revenue.Dates,revenue.Sold,revenue.Sum_Revenue_Month);
+                                   table.Write();
+                                   Console.WriteLine();
+                               }                          
                             }
-                            table.Write();
-                            Console.WriteLine();
-                        
-                            Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
-                            char check = Convert.ToChar(Console.ReadLine());
-                            if(check == 'n')
+                            if(result == false)
                             {
-                               ManagenmentRevenue(shop);
+                                Console.WriteLine("Not found result");
                             }
+                        }
+                        Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                        char check = Convert.ToChar(Console.ReadLine());
+                        if(check == 'n')
+                        {
+                            ManagenmentRevenue(shop);
                         }
                     }
                 } while (true);

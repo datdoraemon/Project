@@ -1,6 +1,7 @@
 using BL;
 using Persistence;
 using ConsoleTables;
+using static System.Math;
 
 namespace Presentation
 {
@@ -50,7 +51,8 @@ namespace Presentation
             {
                 do
                 {
-                    Console.WriteLine("Date: ");
+                    Console.Clear();
+                    Console.WriteLine("Date : ");
                     DateTime date;
                     string? input = Console.ReadLine();
                     if(String.IsNullOrEmpty(input) || input.Length != 10)
@@ -62,30 +64,35 @@ namespace Presentation
                         DateTime.TryParse(input,out date);
                         OrderBL orderBL = new OrderBL();
                         List<Order> orders = orderBL.GetOrderByDates(date,shop);
+                        bool result = false;
                         if(orders != null)
                         {
-                          Console.Clear();
-                          var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","DISH","AMOUNT","TOTAL","STATUS");
+                          var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","STATUS");
                           foreach(Order order in orders)
                           {
                             if(date == order.Dates)
                             {
-                                table.AddRow(order.OrderId,order.Dates,order.Customer_Name,order.Salesman_Name,order.Dish_Name,order.Quantity,order.Total,order.Status);
-                            }
-                            else
-                            {
-                               Console.WriteLine("No Result.");
+                                result = true;
+                                table.AddRow(order.OrderId,order.Dates.ToString("yyyy-MM-dd"),order.Customer_Name,order.Salesman_Name,order.Status);
                             }
                           }
-                        
                           table.Write();
                           Console.WriteLine();
+                          if(result == false)
+                          {
+                              Console.WriteLine("Not found result !");
+                          }
 
-                          Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                          Console.WriteLine("Do you want to see order detail ? (press 'y' to continue, 'n' to exit)");
                           char check = Convert.ToChar(Console.ReadLine());
                           if(check == 'n')
                           {
-                             break;
+                             Console.Write("Do yo want to continue searching");
+                             ManagenmentOrder(shop);
+                          }
+                          else
+                          {
+                             OrderDetail(shop);
                           }
                         }
                     } 
@@ -102,10 +109,12 @@ namespace Presentation
             {
                 do
                 {
+                    Console.Clear();
                     Console.WriteLine("Dish Name: ");
                     string? dish = Convert.ToString(Console.ReadLine());
                     OrderBL orderBL = new OrderBL();
                     List<Order> orders = orderBL.GetOrderByDishes(dish,shop);
+                    bool result = false;
                     if (String.IsNullOrEmpty(dish))
                     {
                         SearchbyDishName(shop);
@@ -114,33 +123,77 @@ namespace Presentation
                     {
                         if(orders != null)
                         {
-                            Console.Clear();
-                            var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","DISH","AMOUNT","TOTAL","STATUS");
+                            var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","STATUS");
                             foreach(Order order in orders)
                             {
                                 if(dish == order.Dish_Name || order.Dish_Name.ToString().ToUpper().Contains(dish.ToUpper()))
                                 {
-                                    table.AddRow(order.OrderId,order.Dates,order.Customer_Name,order.Salesman_Name,order.Dish_Name,order.Quantity,order.Total,order.Status);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("No result.");
-                                }
-                                table.Write();
-                                Console.WriteLine();
-
-                                Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
-                                char check = Convert.ToChar(Console.ReadLine());
-                                if(check == 'n')
-                                {
-                                    break;
+                                    result = true;
+                                    table.AddRow(order.OrderId,order.Dates.ToString("yyyy-MM-dd"),order.Customer_Name,order.Salesman_Name,order.Status);
                                 }
                             } 
+                            table.Write();
+                            Console.WriteLine();
+                            if(result == false)
+                            {
+                                Console.WriteLine("Not found result");
+                            }
+                            Console.WriteLine("Do you want to see order detail ? (press 'y' to continue, 'n' to exit)");
+                            char check = Convert.ToChar(Console.ReadLine());
+                            if(check == 'n')
+                            {
+                               Console.Write("Do yo want to continue searching");
+                                ManagenmentOrder(shop);
+                            }
+                            else
+                            {
+                               OrderDetail(shop);
+                            }
                         }   
                     }    
                 } while(true);
             }
             catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public void FillStatus(int shop)
+        {
+            try
+            {
+                while(true)
+                {
+                    Console.Clear();
+                    string key;
+                    Console.WriteLine("Do you want to see status of orders ? ");
+                    Console.WriteLine("(press '1' to see status 'Da thanh toan'");
+                    Console.WriteLine("       '2' to see status 'Dang giao'");
+                    Console.WriteLine("       '3' to see status 'Don hang moi'");
+                    Console.WriteLine("YOUR CHOICE : ");
+                    int choice = Convert.ToInt32(Console.ReadLine());
+                    if (choice == 1)
+                    {
+                        Console.Write("abc");
+                        key = "Da thanh toan";
+                        SearchbyStatus(key,shop);
+                        break;
+                    }
+                    if(choice == 2)
+                    {
+                        key = "Dang giao";
+                        SearchbyStatus(key,shop);
+                        break;
+                    }
+                    if(choice == 3)
+                    {
+                        key = "Don hang moi";
+                        SearchbyStatus(key,shop);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -153,32 +206,34 @@ namespace Presentation
                 {
                     OrderBL orderBL = new OrderBL();
                     List<Order> orders = orderBL.GetOrderByStatus(status,shop);
+                    bool result = false;
                     if(orders != null)
                     {
-                        var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","DISH","AMOUNT","TOTAL","STATUS");
+                        var table = new ConsoleTable("ORDER ID","DATE","CUSTOMER NAME","SELLER","STATUS");
                         foreach(Order order in orders)
                         {
                             if(order.Status.ToString().ToUpper().Contains(status.ToUpper()))
                             {
-                                table.AddRow(order.OrderId,order.Dates,order.Customer_Name,order.Salesman_Name,order.Dish_Name,order.Quantity,order.Total,order.Status);
-                            }
-                            else
-                            {
-                               Console.WriteLine("No Result.");
+                                result = true;
+                                table.AddRow(order.OrderId,order.Dates.ToString("yyyy-MM-dd"),order.Customer_Name,order.Salesman_Name,order.Status);
                             }
                         }
                         table.Write();
                         Console.WriteLine();
+                        if(result == false)
+                        {
+                            Console.WriteLine("Not found result");
+                        }
 
-                        Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                        Console.WriteLine("Do you want to see order detail ? (press 'y' to continue, 'n' to exit)");
                         char check = Convert.ToChar(Console.ReadLine());
                         if(check == 'n')
                         {
-                            break;
+                            ManagenmentOrder(shop);
                         }
                         else
                         {
-                            FillStatus(shop);
+                            OrderDetail(shop);
                         }
                     } 
                 }
@@ -188,33 +243,85 @@ namespace Presentation
                  Console.WriteLine(e.Message);
              }
         }
-        public void FillStatus(int shop)
+        public void OrderDetail(int shop)
         {
-            try
+            while (true)
             {
-                while(true)
+                Console.Write("Input order ID : ");
+                int orderid = Convert.ToInt32(Console.ReadLine());
+                Order order = new Order();
+                OrderBL orderBL = new OrderBL();
+                List<Order> orders = orderBL.GetOrderDetail(orderid,shop);
+                foreach(Order ord in orders)
                 {
-                    string key;
-                    Console.WriteLine("Do you want to see status of orders ? ");
-                    Console.WriteLine("(press '1' to see status 'Da thanh toan', '2' to see status 'Dang giao') ");
-                    Console.WriteLine("YOUR CHOICE : ");
-                    int choice = Convert.ToInt32(Console.ReadLine());
-                    
-                    if (choice == 1)
+                    if(orderid == ord.OrderId)
                     {
-                        key = "Da thanh toan";
-                        SearchbyStatus(key,shop);
-                    }
-                    if(choice == 2)
-                    {
-                        key = "Dang giao";
-                        SearchbyStatus(key,shop);
+                         Console.WriteLine();
+                         Console.WriteLine("============================");
+                         Console.WriteLine("       Order Detail         ");
+                         Console.WriteLine("============================");
+                         Console.WriteLine("Date : " + ord.Dates.ToString("yyyy-MM-dd"));
+                         Console.WriteLine("Customer Name : " + ord.Customer_Name);
+                         Console.WriteLine("Salesman : " + ord.Salesman_Name);
+                         Console.WriteLine("Payment Method : " + ord.Payment_Method);
+                         int j = 0 , i = 0;
+                         double sum = 0;
+                         double[] values = new double[20];
+                         var table = new ConsoleTable("DISH NAME","AMOUNT","PRICE OF DISH ($)");
+                         foreach(Order o in orders)
+                         {
+                            if(orderid == o.OrderId)
+                            {
+                                table.AddRow(o.Dish_Name,o.Quantity,o.Price);
+                                values[i] = o.Price * o.Quantity;
+                                i++;
+                            }
+                         }
+                         table.Write();
+                         Console.WriteLine();
+                         for (j=0;j<i;j++)
+                         {
+                            sum = sum + values[j];
+                         }
+                         Console.WriteLine("Total : " + sum);
+                         Console.WriteLine("Status : " + ord.Status);
+                         Console.WriteLine("==============================");
+                         break;
                     }
                 }
+                
+                Console.Write("Do you want to change status ? (y / n) : ");
+                char check = Convert.ToChar(Console.ReadLine());
+                if(check == 'n')
+                {
+                    ManagenmentOrder(shop);
+                }
+                else
+                {
+                    UpdateStatus(orderid);
+                    ManagenmentOrder(shop);
+                }
             }
-            catch (Exception e)
+        }
+        public void UpdateStatus(int orderid)
+        {
+            Order order = new Order();
+            OrderBL orderBL = new OrderBL();
+            Console.WriteLine("Input '1' - Dang giao , Input '2' - Da thanh toan");
+            int choose = Convert.ToInt32(Console.ReadLine());
+            if(choose == 1)
             {
-                Console.WriteLine(e.Message);
+                string status = "Dang giao";
+                orderBL.UpdateStatus(status,orderid);
+                Console.WriteLine("Update success !");
+                Thread.Sleep(1000);
+            }
+            if(choose == 2)
+            {
+                string status = "Da thanh toan";
+                orderBL.UpdateStatus(status,orderid);
+                Console.WriteLine("Update success !");
+                Thread.Sleep(1000);
             }
         }
     } 

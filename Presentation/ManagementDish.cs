@@ -14,6 +14,7 @@ namespace Presentation
                {
                    Console.Clear();
                    int choice;
+                   Menu m = new Menu();
                    var table = new ConsoleTable("MANAGEMENT DISH");
                    table.AddRow("1. CREATE DISH");
                    table.AddRow("2. DISPLAY ALL DISHES");
@@ -40,17 +41,12 @@ namespace Presentation
                        DisplayAllCategory(shop);
                        break;
                       case 5:
-                       bool test = false;
-                      if(test == false)
-                      {
-                         break;
-                      }
+                       m.MainMenu(shop);
                        break;
                       default:
                       Console.WriteLine("Choose 1-5");
                       break;
                    }
-                   break;
                }
             }
             catch(Exception e)
@@ -64,32 +60,11 @@ namespace Presentation
             {
                 while(true)
                 {
-                   Random random = new Random();
                    Dish dishes = new Dish();
                    DishBL dishBL = new DishBL();
-                   
                    List<Dish> listdish = dishBL.GetDishID();
-                   int x = random.Next(1 ,500);
-                   foreach(Dish dish in listdish)
-                   {
-                       if(x == dish.DishID)
-                       {
-                           while(x == dish.DishID)
-                           {
-                               x = random.Next(0 ,500); 
-                               if(x != dish.DishID)
-                               {
-                                  dishes.DishID = x;
-                                   break;
-                               }  
-                           }
-                       }
-                       else
-                       {
-                          dishes.DishID = x;
-                       }
-                   }
-                   Console.WriteLine("Dish ID : "+ dishes.DishID);
+                   dishes.DishID = CreateID();
+                   Console.WriteLine("No : "+ dishes.DishID);
                    do
                    {
                         Console.Write("Dish Name: ");
@@ -97,14 +72,14 @@ namespace Presentation
                         Console.Write("Amount: ");
                         string? amount = Console.ReadLine();
                         Console.Write("Price : ");
-                        string? price = Convert.ToString(Console.ReadLine());
+                        string? input = Console.ReadLine(); 
                         Console.Write("Date of manufacture (yyyy-MM-dd) : ");
                         string? manu = Convert.ToString(Console.ReadLine());
                         Console.Write("Expiry (yyyy-MM-dd): ");
                         string? ex = Convert.ToString(Console.ReadLine());
-                        if(String.IsNullOrEmpty(dishes.DishName)  || string.IsNullOrEmpty(amount) || string.IsNullOrEmpty(price)
-                        || String.IsNullOrEmpty(manu) || String.IsNullOrEmpty(ex) || (manu.Substring(4,1) != "-" && manu.Substring(7,1) != "-")
-                        || (ex.Substring(4,1) != "-" && ex.Substring(7,1) != "-"))
+                        if(String.IsNullOrEmpty(dishes.DishName)  || string.IsNullOrEmpty(amount)
+                        || String.IsNullOrEmpty(manu) || String.IsNullOrEmpty(ex) || (manu.Substring(4,1) != "-" || manu.Substring(7,1) != "-")
+                        || (ex.Substring(4,1) != "-" || ex.Substring(7,1) != "-"))
                         {
                             Console.WriteLine("Not null or define not sure. Try again !");
                             Thread.Sleep(1000);
@@ -115,67 +90,85 @@ namespace Presentation
                             int num;
                             Int32.TryParse(amount ,out num);
                             dishes.Amount = num;
-                            double quantity;
-                            Double.TryParse(price, out quantity);
-                            dishes.Price = quantity;
+                            double price;
+                            Double.TryParse(input, out price);
+                            dishes.Price = price;
                             DateTime manufacture;
                             DateTime.TryParse(manu ,out manufacture);
                             dishes.DateofManufacture = manufacture;
                             DateTime expiry;
                             DateTime.TryParse(ex, out expiry);
                             dishes.Expiry = expiry;
-                            break;
+                            if(DateTime.Compare(manufacture,DateTime.Now) > 0 || DateTime.Compare(manufacture,expiry) > 0)
+                            {
+                                Console.WriteLine("Input manufacture / expiry not sure. Input again");
+                                Thread.Sleep(1000);
+                                continue;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
                    } while (true);
-
-                   Console.Write("Do you want to add this dish ?");
-                   char check = Convert.ToChar(Console.ReadLine());
-                   if(check == 'y')
-                   {
-                       dishBL.InsertDish(dishes);
-                       dishBL.SaveDish(dishes,shop);
-                       Console.WriteLine("Add dish success");
-                       Console.Write("Do you want to add else dish : ");
-                       char key = Convert.ToChar(Console.ReadLine());
-                       if(key == 'y')
-                       {
-                           InsertDish(shop);
-                       }
-                       else
-                       {
+                    Console.Write("Do you want to add this dish ? (y/n) : ");
+                    string? check = Console.ReadLine();
+                    if(check == "y")
+                    {
+                        dishBL.InsertDish(dishes);
+                        dishBL.SaveDish(dishes,shop);
+                        Console.WriteLine("Add dish success !");
+                        Console.Write("Do you want to add another dish ? (y/n) : ");
+                        char key = Convert.ToChar(Console.ReadLine());
+                        if(key == 'y')
+                        {
+                            InsertDish(shop);
+                        }
+                        else
+                        {
                            ManagementDishes(shop);
-                       }
-                   }
+                        }
+                    }
+                    else
+                    {
+                        ManagementDishes(shop);
+                    }
                 }
             }
-            catch
+            catch(Exception e)
             {
-
+                Console.WriteLine(e.Message);
             }
         }
-        public void DisplayAllDish(int shop)
+        public void DisplayAllDish(int shop, int page = 1)
         {
                 while(true)
                 {
                     DishBL dishBL = new DishBL();
                     List<Dish> dishes = dishBL.GetAllDish(shop);
+                    int size = 5;
+                    int pages = (int) Math.Ceiling((double)dishes.Count / size);
+                    var list = dishes.Skip((page - 1) * size).Take(size).ToList();
                     if(dishes != null)
                     {
-                        Console.Clear();
+                        Console.Clear(); 
                         var table = new ConsoleTable("DISH ID","DISH NAME","AMOUNT","PRICE","DATE OF MANUFACTURE","EXPIRY");
-                        foreach(Dish dish in dishes)
+                        foreach(Dish dish in list)
                         {
-                            table.AddRow(dish.DishID, dish.DishName, dish.Amount, dish.Price, dish.DateofManufacture, dish.Expiry);  
+                            table.AddRow(dish.DishID, dish.DishName, dish.Amount, dish.Price, dish.DateofManufacture.ToString("yyyy-MM-dd"), dish.Expiry.ToString("yyyy-MM-dd"));  
                         }
-                        
                         table.Write();
                         Console.WriteLine();
 
-                        Console.WriteLine("Do you want to continue ? (press 'y' to continue, 'n' to exit)");
+                        Console.WriteLine("Do you want to see other results ? (press 'y' to continue, 'n' to exit)");
                         char check = Convert.ToChar(Console.ReadLine());
                         if(check == 'n')
                         {
                             ManagementDishes(shop);
+                        }
+                        else
+                        {
+                            page++;
                         }
                     }
                 }
@@ -318,8 +311,19 @@ namespace Presentation
                        }
                    }
                    Console.WriteLine("Category ID : "+ category.CategoryID);
-                   Console.Write("Category Name: ");
-                   category.CategoryName = Convert.ToString(Console.ReadLine());
+                   do 
+                   {
+                       Console.Write("Category Name: ");
+                       category.CategoryName = Convert.ToString(Console.ReadLine());
+                       if(String.IsNullOrEmpty(category.CategoryName))
+                       {
+                           continue;
+                       }
+                       else
+                       {
+                           break;
+                       }
+                   } while (true);
 
                    Console.Write("Do you want to save this category ? (Input 'y' to save , 'n' to not save)");
                    char check = Convert.ToChar(Console.ReadLine());
@@ -328,7 +332,7 @@ namespace Presentation
                        cateBL.InsertCate(category);
                        cateBL.SaveCate(category, shop);
                        Console.WriteLine("Add dish success");
-                       Console.Write("Do you want to add else dish : ");
+                       Console.Write("Do you want to add another dish ? (y/n) : ");
                        char key = Convert.ToChar(Console.ReadLine());
                        if(key == 'n')
                        {
@@ -337,9 +341,9 @@ namespace Presentation
                    }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message);
             }
         }
         public void EditCate(int shop)
@@ -348,7 +352,6 @@ namespace Presentation
             {
                while(true)
                {
-                   Console.Clear();
                    Category category = new Category();
                    Console.WriteLine("What do you want to edit ? (Input categoryID)");
                    int cateID = Convert.ToInt32(Console.ReadLine());
@@ -401,7 +404,6 @@ namespace Presentation
         }
         public void DisplayDetailDish(int shop)
         {
-            Console.Clear();
             Category category = new Category();
             CategoryBL categoryBL = new CategoryBL();
             
@@ -414,16 +416,17 @@ namespace Presentation
                 {
                    if(key == cat.DishID)
                    {
+                      Console.Clear();
                       Console.WriteLine("====================");
                       Console.WriteLine("DETAIL DISH");
                       Console.WriteLine("====================");
                       Console.WriteLine("1.Dish Name : " + cat.DishName);
                       Console.WriteLine("2.Amount : " + cat.Amount);
                       Console.WriteLine("3.Price : " + cat.Price);
-                      Console.WriteLine("4.Date of manufacture : " + cat.DateofManufacture);
-                      Console.WriteLine("5.Expiry : " + cat.Expiry);
+                      Console.WriteLine("4.Date of manufacture : " + cat.DateofManufacture.ToString("yyyy-MM-dd"));
+                      Console.WriteLine("5.Expiry : " + cat.Expiry.ToString("yyyy-MM-dd"));
                       Console.WriteLine("==========================");
-                      Console.Write("Do you want to update information of dish ? (Input 'y' to update , 'n' to exit)");
+                      Console.Write("Do you want to update information of dish ? (Input 'y' to update , 'n' to exit) : ");
                       char check = Convert.ToChar(Console.ReadLine());
                       if(check == 'y')
                       {
@@ -567,22 +570,21 @@ namespace Presentation
                         DishBL dishBL = new DishBL();
                         Dish dish = new Dish();
                         List<Dish> dishes = dishBL.GetSearchDish(shop,name);
+                        bool result = false;
+                        var table = new ConsoleTable("DISH ID","DISH NAME","AMOUNT","PRICE","DATE OF MANUFACTURE","EXPIRY");
                         foreach(Dish d in dishes)
                         {
-                            var table = new ConsoleTable("DISH ID","DISH NAME","AMOUNT","PRICE","DATE OF MANUFACTURE","EXPIRY");
-                   
                             if(name.ToUpper() == d.DishName.ToUpper() || d.DishName.ToString().ToUpper().Contains(name.ToUpper()))
                             {
+                                result = true;
                                 table.AddRow(d.DishID,d.DishName,d.Amount,d.Price,d.DateofManufacture,d.Expiry);  
                             }
-                            else
-                            {
-                                Console.Write("Not found result !");
-                                break;
-                            }
-
-                           table.Write();
-                           Console.WriteLine();
+                        }
+                        table.Write();
+                        Console.WriteLine();
+                        if(result == false)
+                        {
+                            Console.WriteLine("Not found result !");
                         }
                         Console.Write("Do you want to continue ? (y/n)");
                         char check = Convert.ToChar(Console.ReadLine());
@@ -591,7 +593,6 @@ namespace Presentation
                             ManagementDishes(shop);
                         }
                     }
-
                 } while(true);
             }
             catch(Exception e)
@@ -650,6 +651,25 @@ namespace Presentation
                     return key;
                 }
             } while (true);
+        }
+        public int CreateID()
+        {
+            int max = 1;
+            DishBL dishBL = new DishBL();
+            List<Dish> listdish = dishBL.GetDishID();
+            if(listdish != null && listdish.Count > 0)
+            {
+                max = listdish[0].DishID;
+                foreach(Dish ds in listdish)
+                {
+                    if(max < ds.DishID)
+                    {
+                        max = ds.DishID;
+                    }
+                }
+                max++;
+            }
+            return max;
         }
     }
 }

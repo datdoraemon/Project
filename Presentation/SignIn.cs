@@ -1,7 +1,7 @@
 using BL;
 using Persistence;
 using System.Text;
-using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace Presentation
 {
@@ -11,20 +11,22 @@ namespace Presentation
         {
             while (true)
             {
+                Console.Clear();
+                Console.WriteLine("====================");
+                Console.WriteLine("SIGN IN");
+                Console.WriteLine("====================");
                 do
                 {
-                    Console.Clear();
-                    Console.WriteLine("====================");
-                    Console.WriteLine("SIGN IN");
-                    Console.WriteLine("====================");
                     Console.Write("UserName : ");
                     string? username = Convert.ToString(Console.ReadLine());
-                    if(username == null)
+                    if(string.IsNullOrEmpty(username))
                     {
-                        Console.WriteLine("Not null . Input again !");
+                        Console.WriteLine("Not null. Input again !");
+                        continue;
                     }
                     else
                     {
+                        bool check = false;
                         Salesman salesman = new Salesman();
                         SalesmanBL salesmanBL = new SalesmanBL();
                         List<Salesman> salesmenlist = salesmanBL.GetUserNAme(username);
@@ -32,40 +34,54 @@ namespace Presentation
                         {
                             if(username == sales.Username)
                             {
-                                InputPassword();
-                            }
-                            else
-                            {
-                                break;
+                                check = true;
+                                InputPassword(username);
                             }
                         }
-                        Console.WriteLine("Account don't exist. Input Again");
+                        if(check == false)
+                        {
+                            Console.WriteLine("Account don't exist. Input Again");
+                        }
                     }
                 } while (true);
             }
         }
-        public void InputPassword()
+        public void InputPassword(string username)
         {
             do
             {
                 Console.Write("Password : ");
-                string? password = Convert.ToString(Console.ReadLine());
-                string? md5 = CreateMD5(password);
-                if(password == null)
+                string password = "";
+                ConsoleKeyInfo info = Console.ReadKey(true);
+                while(info.Key != ConsoleKey.Enter)
                 {
+                   if(info.Key != ConsoleKey.Spacebar && info.Key != ConsoleKey.Backspace)
+                   {
+                      password += info.KeyChar;
+                      Console.Write("*");
+                   }
+                   info = Console.ReadKey(true);
+                }
+                Console.WriteLine();
+                string? md5 = CreateMD5(password);
+                if(string.IsNullOrEmpty(password))
+                {
+                    Console.WriteLine("Password not null. Input again !");
                     continue;
                 }
                 else
                 {
+                    bool check = false;
                     Salesman salesman = new Salesman();
                     SalesmanBL salesmanBL = new SalesmanBL();
                     List<Salesman> salesmenlist = salesmanBL.GetPassword(md5);
                     foreach (Salesman sales in salesmenlist)
                     {
-                        if(sales.Password == md5)
+                        if(sales.Password == md5 && username == sales.Username)
                         {
+                            check = true;
                             Console.WriteLine("Sign in success !");
-                            Thread.Sleep(2000);
+                            Thread.Sleep(1000);
                             int shop = sales.ShopID;
                             Menu menu = new Menu();
                             menu.MainMenu(shop); 
@@ -76,11 +92,10 @@ namespace Presentation
                             ManagementDish md = new ManagementDish();
                             md.ManagementDishes(shop);
                         }
-                        else
-                        {
-                            Console.WriteLine("Account/pasword don't exist. Input Again");
-                            break;
-                        }
+                    }
+                    if(check == false)
+                    {
+                        Console.WriteLine("Account don't exist. Input Again");
                     }
                 }
             } while (true);
@@ -95,6 +110,5 @@ namespace Presentation
                 return builder.ToString();
             }
         }
-        
     }
 }

@@ -30,12 +30,15 @@ namespace Presentation
             while (true)
             {
                 int choice;
-                var table = new ConsoleTable("MENU");
-                table.AddRow("1. Management Dishes");
-                table.AddRow("2. Management Orders");
-                table.AddRow("3. Revenue Management");
-                table.Write();
-                Console.WriteLine();
+                Console.WriteLine("------------------------");
+                Console.WriteLine("|        MENU           |");
+                Console.WriteLine("------------------------");
+                Console.WriteLine("| 1. DISHES MANAGEMENT  |");
+                Console.WriteLine("------------------------");
+                Console.WriteLine("| 2. ORDERS MANAGEMENT  |");
+                Console.WriteLine("------------------------");
+                Console.WriteLine("| 3. REVENUE MANAGEMENT |");
+                Console.WriteLine("------------------------");
                 Console.Write("YOUR CHOICE : ");
                 choice = Convert.ToInt32(Console.ReadLine());
                 switch(choice)
